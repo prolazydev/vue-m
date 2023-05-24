@@ -1,5 +1,6 @@
-.DS_Store
 node_modules
+*/package-lock.json
+
 /dist
 dist-ssr
 /public
@@ -31,3 +32,4 @@ lerna-debug.log*
 *.sln
 *.sw?
 .DS_Store
+vue-m-ui/package-lock.json

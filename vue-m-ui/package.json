@@ -1,6 +1,6 @@
 {
 	"name": "@prolazydev/vue-m",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"private": false,
 	"description": "UI components for Vue.js made with tailwind and ❤",
 	"author": {
@@ -18,22 +18,23 @@
 	"files": [
 		"dist"
 	],
-	"main": "./dist/vue-m.umd.js",
-	"module": "./dist/vue-m.es.js",
-	"types": "./dist/main.d.ts",
+	"main": "dist/vue-m.umd.js",
+	"module": "dist/vue-m.es.js",
+	"types": "dist/main.d.ts",
 	"engines": {
 		"node": ">=18"
 	},
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
+			"types": "./dist/main.d.ts",
 			"import": "./dist/vue-m.es.js",
 			"require": "./dist/vue-m.umd.js"
 		},
 		"./dist/vue-m.css": {
 			"import": "./dist/vue-m.css",
 			"require": "./dist/vue-m.css"
-		}
+		},
+		"./package.json": "./package.json"
 	},
 	"scripts": {
 		"build": "vue-tsc && vite build",
