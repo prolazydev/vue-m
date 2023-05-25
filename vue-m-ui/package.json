@@ -47,7 +47,7 @@
 		"vue": "^3.2.0"
 	},
 	"dependencies": {
-		"vue": "^3.0.0"
+		"vue": "^3.2.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.1.3",
