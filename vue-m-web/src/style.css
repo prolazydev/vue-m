@@ -1,11 +1,8 @@
 :root {
-	--bg: linear-gradient(rgba(52, 52, 52, 0.1), rgba(52, 52, 52, 0.1)),
-	url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAABnSURBVHja7M5RDYAwDEXRDgmvEocnlrQS2SwUFST9uEfBGWs9c97nbGtDcquqiKhOImLs/UpuzVzWEi1atGjRokWLFi1atGjRokWLFi1atGjRokWLFi1af7Ukz8xWp8z8AAAA//8DAJ4LoEAAlL1nAAAAAElFTkSuQmCC")
-	repeat 0 0;
+	--bg: url('./assets/bg-square.svg');
+	--bg-dark: url('./assets/bg-square-dark.svg');
+	--bg-transparent: url('./assets/bg-square-transparent.svg');
 
-	/* --shadow-green: 2px 2px 0px #7bf09a;
-	--shadow-blue: 4px 4px 10em  blue;
-	--shadow-red: 6px 6px 10em red; */
 }
 
 * {
@@ -32,11 +29,7 @@ body {
 
 	padding: 3rem;
 	background: var(--bg);
-	/* filter: li; */
+	background: var(--bg-dark);
+	background: var(--bg-transparent);
 	transition: transform, background, background-position 0.25s ease-out !important;
-}
-
-#app::before {
-	background: var(--bg);
-	filter: brightness(60%) invert(70%) opacity(20%);
 }
