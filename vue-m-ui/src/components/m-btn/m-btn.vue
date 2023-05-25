@@ -21,16 +21,12 @@
 <script lang="ts" setup>
 import { ComputedRef, StyleValue, computed, ref, watch } from 'vue';
 import { dynamicSVG } from '@/utils';
-import { btnSizes, btnStyles, btnShapes, btnColors, createLighterShades } from './props';
+import { btnSizes, btnStyles, btnShapes, textColors, createLighterShades } from './props';
 
 const mBtn = ref<HTMLButtonElement | null>(null);
 const shades = ref<string[]>([]);
 const customColorTest = ref<StyleValue>();
 const mousedown = ref(false);
-
-watch(mousedown, () => {
-    console.log('watch: ', mousedown.value);
-});
 
 const btnProps = defineProps({
     text: {
@@ -78,7 +74,7 @@ const btnProps = defineProps({
 const handleBtnTextColor: ComputedRef<String> = computed(() => {
     if (!btnProps.textColor)
         return '';
-    return (btnColors as any)[ btnProps.textColor ];
+    return (textColors as any)[ btnProps.textColor ];
 });
 
 const handleBtnColor: ComputedRef<StyleValue | String[] | String | undefined> = computed(() => {
@@ -90,7 +86,7 @@ const handleBtnColor: ComputedRef<StyleValue | String[] | String | undefined> = 
         mBtn.value?.addEventListener('mouseenter', () => mBtn.value!.style.backgroundColor = shades.value[ 0 ]);
         mBtn.value?.addEventListener('mouseleave', () => mBtn.value!.style.backgroundColor = btnProps.color);
 
-        mBtn.value?.addEventListener('mousedown', () => mBtn.value!.style.backgroundColor = shades.value[ 1 ]);
+        mBtn.value?.addEventListener('mousedown', () => { mBtn.value!.style.backgroundColor = shades.value[ 1 ]; mousedown.value = true; });
         mBtn.value?.addEventListener('mouseup', () => mBtn.value!.style.backgroundColor = shades.value[ 0 ]);
 
         mBtn.value?.addEventListener('focusin', () => {
@@ -129,9 +125,10 @@ const handleBtnTransparency = computed(() => {
 const isCustomColor: ComputedRef<boolean> = computed(() => {
     if (typeof handleBtnColor.value == 'string')
         return false;
-    const test: string = 'test';
 
-    return typeof handleBtnColor.value == 'object' && (handleBtnColor as any).value?.backgroundColor?.startsWith('#') || (handleBtnColor as any).value?.backgroundColor?.startsWith('#') || (handleBtnColor as any).value?.backgroundColor?.startsWith('rgb');
+    return typeof handleBtnColor.value == 'object'
+        && (handleBtnColor as any).value?.backgroundColor?.startsWith('#')
+        || (handleBtnColor as any).value?.backgroundColor?.startsWith('rgb');
 })
 
 </script>

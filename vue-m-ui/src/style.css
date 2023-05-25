@@ -105,10 +105,13 @@
 }
 
 .m-btn-dark {
-	@apply m-text-light bg-neutral-800 hover:bg-gray-700 active:bg-gray-600;
-
-	background-color: rgb(30,32,35);
+	@apply m-text-light bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600
 }
+.m-btn-dark:focus-visible {
+	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(38 38 38);
+	outline-color: rgb(229 229 229);
+}
+
 .m-btn-pink:focus-visible {
 	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(219 39 119);
 }
@@ -248,7 +251,7 @@
 	@apply text-sky-400
 }
 .m-text-secondary {
-	@apply text-[#f4f4f4]
+	@apply text-[#bbbbbb]
 }
 .m-text-success {
 	@apply text-emerald-300;

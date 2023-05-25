@@ -7,6 +7,7 @@ export const btnStyles = {
     warning: 'm-btn m-btn-warning',
     info: 'm-btn m-btn-info',
     light: 'm-btn m-btn-light',
+    dark: 'm-btn m-btn-dark',
 
     indigo: 'm-btn m-btn-indigo',
     purple: 'm-btn m-btn-purple',
@@ -30,7 +31,7 @@ export const btnShapes = {
     pill: 'm-btn-shape-pill',
 };
 
-export const btnColors = {
+export const textColors = {
     default: '',
 
     dark: 'm-text-dark',
