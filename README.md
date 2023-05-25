@@ -1,8 +1,8 @@
 # vue-m ⚒ WORK IN PROGRESS
 
-`0.1.0 is out! 🎉🥳`
+`0.1.1 is out! 🎉🥳`
 
-[![npm version](https://badge.fury.io/js/vue-m.svg)](https://badge.fury.io/js/vue-m)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/prolazydev/vue-m?color=blue&include_prereleases&style=for-the-badge) ![npm](https://img.shields.io/npm/dt/@prolazydev/vue-m?color=orange&label=downs&style=for-the-badge) [![license](https://img.shields.io/github/license/prolazydev/vue-m.svg?style=for-the-badge)](https://github.com/prolazydev/vue-m/blob/main/LICENSE) [![code with hearth by NHN Cloud](https://img.shields.io/badge/%3C%2F%3E%20with%20%20cooless%20%F0%9F%98%8E%20by-prolazydev-00bf76.svg?style=for-the-badge)](https://github.com/nhn)
 
 ## Introduction
 
@@ -49,7 +49,7 @@ Then use the components like this:
 ```vue
 <template>
   <div>
-      <m-btn text="Write here" color='primary' />
+      <m-btn text="Write here" color='success' /> <!-- color is 'primary by default' -->
       <!-- or -->
       <m-btn>
          <div>
