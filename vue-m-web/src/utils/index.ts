@@ -1,3 +1,5 @@
+import { Color } from "../types";
+
 export function bgMouseTracking() {
 	var factor = 10;
 
@@ -46,7 +48,56 @@ export function typeText(text: string, el: HTMLElement, minDelay: number = 75, m
 	typeNextCharacter();
 }
 
-// export function 
-
+export const titleText = 'Vue-M Component Library &#x1F60E;';
+export const colors: Color[] = [
+	{
+		name: 'info',
+		color: 'info',
+	},
+	{
+		name: 'success',
+		color: 'success',
+	},
+	{
+		name: 'primary',
+		color: 'primary',
+	},
+	{
+		name: 'secondary',
+		color: 'secondary',
+	},
+	{
+		name: 'indigo',
+		color: 'indigo',
+	},
+	{
+		name: 'danger',
+		color: 'danger',
+	},
+	{
+		name: 'warning',
+		color: 'warning',
+	},
+	{
+		name: 'pink',
+		color: 'pink',
+	},
+	{
+		name: 'light',
+		color: 'light',
+	},
+	{
+		name: 'dark',
+		color: 'dark',
+	},
+	{
+		name: 'custom 1',
+		color: 'rgb(245, 78, 0)',
+	},
+	{
+		name: 'custom 2',
+		color: 'rgba(245, 40, 145, 0.8)',
+	},
+];
 
 
