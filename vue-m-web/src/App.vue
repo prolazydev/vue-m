@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
 		<div class="main-title">
-			<h1 id="mainTitle"></h1>
+			<h1 id="mainTitle" class="m-test-title"></h1>
 		</div>
 		<div class="hr-line">
 			<hr class="border-t-2 border-dashed ">
