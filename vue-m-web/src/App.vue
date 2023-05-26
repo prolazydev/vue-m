@@ -3,7 +3,10 @@
 		<div class="main-title">
 			<h1 id="mainTitle"></h1>
 		</div>
-		<div class="ui-elements m-auto w-4/5 flex flex-wrap gap-4">
+		<div class="hr-line">
+			<hr class="border-t-2 border-dashed ">
+		</div>
+		<div class="ui-elements m-auto w-4/5 flex flex-wrap gap-4 justify-between">
 			<div ref=btn_el class="m-el m-input-el ">
 				<p 	class="cursor-pointer underline-offset-[6px] underline hover:underline-offset-2 select-none transition-all duration-[250ms]">
 					Button
@@ -24,7 +27,7 @@ import { Color } from './types';
 
 const color = ref<Color>({ name: 'default', color: 'default' });
 const btn_el = ref<HTMLButtonElement>();
-const elIntervalId = ref(-1);
+const elIntervalId = ref<NodeJS.Timer>();
 
 onMounted(() => {
 	const mainTitle = document.getElementById('mainTitle')!;
@@ -49,7 +52,7 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped>
 .vue-m-2 {
 	width: 100px;
 	height: auto;
@@ -59,7 +62,7 @@ onMounted(() => {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 3rem;
+	gap: 4rem;
 }
 
 .main-title {

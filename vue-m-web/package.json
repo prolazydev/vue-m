@@ -8,12 +8,18 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
+  "engines": {
+		"node": ">=18"
+	},
   "dependencies": {
+    "@prolazydev/vue-m": "^0.1.2",
     "vue": "^3.2.47"
   },
   "devDependencies": {
+    "@types/node": "^20.2.5",
     "@vitejs/plugin-vue": "^4.1.0",
     "autoprefixer": "^10.4.14",
+    "path": "^0.12.7",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
