@@ -42,7 +42,7 @@
 /* Button Disabled */
 .m-btn:disabled {
 	@apply select-none shadow-none;
-	filter: brightness(0.75)
+	/* filter: brightness(0.75) */
 }
 .m-btn:disabled .m-btn-content {
 	@apply opacity-30 select-none

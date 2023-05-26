@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button ref="mBtn" id="myCustomBtn"
+        <button ref="mBtn" id="myCustomBtn" color=""
             :class="[ !isCustomColor ? handleBtnColor : 'm-btn', handleBtnSize, handleBtnShape, handleBtnTransparency, handleBtnTextColor ]"
-            :style="[ [ isCustomColor ? (handleBtnColor as StyleValue) : '', customColorTest! ], ]"
+            :style="[ [ isCustomColor ? (handleBtnColor as StyleValue) : '', customColorTest! ] ]"
             :disabled="handleBtnLoadingState">
             <div :class="{ 'm-loading': handleBtnLoadingState }" class="m-btn-content">
                 <template v-if="btnProps.text">
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef, StyleValue, computed, ref, watch } from 'vue';
+import { ComputedRef, StyleValue, computed, ref } from 'vue';
 import { dynamicSVG } from '@/utils';
 import { btnSizes, btnStyles, btnShapes, textColors, createLighterShades } from './props';
 
@@ -101,18 +101,22 @@ const handleBtnColor: ComputedRef<StyleValue | String[] | String | undefined> = 
     return (btnStyles as any)[ btnProps.color ];
 });
 
-const handleBtnSize = computed(() => (btnSizes as any)[ btnProps.size ]);
-
-const handleBtnLoadingState = computed(() => {
-    if (typeof btnProps.loading === 'string' && btnProps.loading == 'false')
-        return false;
-    return Boolean(btnProps.loading);
+const handleBtnSize = computed(() => {
+    if (!btnProps.size)
+        return btnSizes.md
+    return (btnSizes as any)[ btnProps.size ];
 });
 
 const handleBtnShape = computed(() => {
     if (!btnProps.shape)
         return btnShapes.default;
     return (btnShapes as any)[ btnProps.shape ];
+});
+
+const handleBtnLoadingState = computed(() => {
+    if (typeof btnProps.loading === 'string' && btnProps.loading == 'false')
+        return false;
+    return Boolean(btnProps.loading);
 });
 
 const handleBtnTransparency = computed(() => {
