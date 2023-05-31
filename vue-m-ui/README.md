@@ -2,7 +2,7 @@
 
 `0.1.1 is out! 🎉🥳`
 
-![npm](https://img.shields.io/npm/v/@prolazydev/vue-m?color=blue&label=release&style=for-the-badge) ![npm](https://img.shields.io/npm/dt/@prolazydev/vue-m?color=orange&label=downs&style=for-the-badge) [![license](https://img.shields.io/github/license/prolazydev/vue-m.svg?style=for-the-badge)](https://github.com/prolazydev/vue-m/blob/main/LICENSE) [![code with hearth by NHN Cloud](https://img.shields.io/badge/%3C%2F%3E%20with%20%20cooless%20%F0%9F%98%8E%20by-prolazydev-00bf76.svg?style=for-the-badge)](https://github.com/nhn)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/prolazydev/vue-m?color=blue&include_prereleases&style=for-the-badge) ![npm](https://img.shields.io/npm/dt/@prolazydev/vue-m?color=orange&label=downs&style=for-the-badge) [![license](https://img.shields.io/github/license/prolazydev/vue-m.svg?style=for-the-badge)](https://github.com/prolazydev/vue-m/blob/main/LICENSE) [![code with hearth by NHN Cloud](https://img.shields.io/badge/%3C%2F%3E%20with%20%20cooless%20%F0%9F%98%8E%20by-prolazydev-00bf76.svg?style=for-the-badge)](https://github.com/nhn)
 
 ## Introduction
 

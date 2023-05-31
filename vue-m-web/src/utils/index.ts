@@ -2,7 +2,6 @@ import { Color } from "../types";
 
 export function bgMouseTracking() {
 	var factor = 10;
-
 	const app = document.getElementById('app')!;
 
 	document.onmousemove = function (e) {

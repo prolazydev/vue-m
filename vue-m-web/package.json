@@ -9,10 +9,9 @@
     "preview": "vite preview"
   },
   "engines": {
-		"node": ">=18"
-	},
+    "node": ">=18"
+  },
   "dependencies": {
-    "@prolazydev/vue-m": "^0.1.4",
     "vue": "^3.2.47"
   },
   "devDependencies": {

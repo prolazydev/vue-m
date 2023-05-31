@@ -1,6 +1,6 @@
 {
 	"name": "@prolazydev/vue-m",
-	"version": "0.1.2",
+	"version": "0.1.4",
 	"private": false,
 	"description": "UI components for Vue.js made with tailwind and ❤",
 	"author": {
@@ -41,7 +41,8 @@
 		"build:watch": "vue-tsc && vite build --watch",
 		"build:style": "postcss ./src/style.css -o ./dist/vue-m.css",
 		"build:style:watch": "postcss ./src/style.css -o ./dist/vue-m.css --watch",
-		"build:all": "npm run build && npm run build:style"
+		"build:all": "npm run build && npm run build:style",
+		"build:all:patch": "npm version patch && npm run build && npm run build:style && npm publish"
 	},
 	"peerDependencies": {
 		"vue": "^3.2.0"

@@ -1,17 +1,14 @@
 <template>
     <div>
         <button ref="mBtn" id="myCustomBtn" color=""
-            :class="[ !isCustomColor ? handleBtnColor : 'm-btn', handleBtnSize, handleBtnShape, handleBtnTransparency, handleBtnTextColor ]"
-            :style="[ [ isCustomColor ? (handleBtnColor as StyleValue) : '', customColorTest! ] ]"
-            :disabled="handleBtnLoadingState">
-            <div :class="{ 'm-loading': handleBtnLoadingState }" class="m-btn-content">
-                <template v-if="btnProps.text">
-                    {{ btnProps.text }}
-                </template>
+            :class="[ !isCustomColor ? handleColor : 'm-btn', handleSize, handleShape, handleTransparency, handleTextColor ]"
+            :style="isCustomColor ? (handleColor as StyleValue) : ''" :disabled="handleLoadingState || (disabled as boolean)">
+            <div :class="{ 'm-loading': handleLoadingState }" class="m-btn-content">
+                <template v-if="props.text"> {{ props.text }} </template>
                 <slot v-else />
             </div>
 
-            <template v-if="handleBtnLoadingState">
+            <template v-if="handleLoadingState">
                 <component v-if="dynamicSVG(loadingIcon)" :is="dynamicSVG(loadingIcon)"></component>
             </template>
         </button>
@@ -20,15 +17,15 @@
 
 <script lang="ts" setup>
 import { ComputedRef, StyleValue, computed, ref } from 'vue';
-import { dynamicSVG } from '@/utils';
-import { btnSizes, btnStyles, btnShapes, textColors, createLighterShades } from './props';
+import { createLighterShades, dynamicSVG } from '@/utils';
+import { btnSizes, btnColors } from './props';
+import { shapes, textColors } from '@/common';
 
 const mBtn = ref<HTMLButtonElement | null>(null);
 const shades = ref<string[]>([]);
-const customColorTest = ref<StyleValue>();
 const mousedown = ref(false);
 
-const btnProps = defineProps({
+const props = defineProps({
     text: {
         type: String,
     },
@@ -52,6 +49,10 @@ const btnProps = defineProps({
         type: String,
         default: 'default',
     },
+    disabled: {
+        type: [ Boolean, String ],
+        default: false,
+    },
     loading: {
         type: [ Boolean, String ],
         default: false,
@@ -71,68 +72,85 @@ const btnProps = defineProps({
 });
 
 // Prop Handling
-const handleBtnTextColor: ComputedRef<String> = computed(() => {
-    if (!btnProps.textColor)
+const handleTextColor: ComputedRef<String> = computed(() => {
+    if (!props.textColor)
         return '';
-    return (textColors as any)[ btnProps.textColor ];
+    return (textColors as any)[ props.textColor ];
 });
 
-const handleBtnColor: ComputedRef<StyleValue | String[] | String | undefined> = computed(() => {
-    if (!btnProps.color)
-        return btnStyles.default + ' ' + btnSizes.md;
-    if (btnProps.color.startsWith('#') || btnProps.color.startsWith('rgb') || btnProps.color.startsWith('rgba')) {
-        shades.value = createLighterShades(btnProps.color);
-
-        mBtn.value?.addEventListener('mouseenter', () => mBtn.value!.style.backgroundColor = shades.value[ 0 ]);
-        mBtn.value?.addEventListener('mouseleave', () => mBtn.value!.style.backgroundColor = btnProps.color);
-
-        mBtn.value?.addEventListener('mousedown', () => { mBtn.value!.style.backgroundColor = shades.value[ 1 ]; mousedown.value = true; });
-        mBtn.value?.addEventListener('mouseup', () => mBtn.value!.style.backgroundColor = shades.value[ 0 ]);
-
-        mBtn.value?.addEventListener('focusin', () => {
-            if (!mousedown.value)
-                mBtn.value!.style.boxShadow = `0px 0px 0px white, 0px 0px 0px 1.5px ${btnProps.color}`;
-            mousedown.value = false;
-        });
-        mBtn.value?.addEventListener('blur', () => { mBtn.value!.style.boxShadow = ''; mousedown.value = false; });
-
-        return { backgroundColor: btnProps.color };
+const handleColor: ComputedRef<StyleValue | String[] | String | undefined> = computed(() => {
+    removeEventListeners();
+    if (!props.color)
+        return btnColors.default + ' ' + btnSizes.md;
+    if (props.color.startsWith('#') || props.color.startsWith('rgb') || props.color.startsWith('rgba')) {
+        shades.value = createLighterShades(props.color);
+        addEventListeners();
+        return { backgroundColor: props.color };
     }
-    return (btnStyles as any)[ btnProps.color ];
+    return (btnColors as any)[ props.color ];
 });
 
-const handleBtnSize = computed(() => {
-    if (!btnProps.size)
-        return btnSizes.md
-    return (btnSizes as any)[ btnProps.size ];
+function removeEventListeners() {
+    mBtn.value?.removeEventListener('mouseenter', onMouseEnter);
+    mBtn.value?.removeEventListener('mouseleave', onMouseLeave);
+    mBtn.value?.removeEventListener('mousedown', onMouseDown);
+    mBtn.value?.removeEventListener('mouseup', onMouseUp);
+    mBtn.value?.removeEventListener('focusin', onFocusIn);
+    mBtn.value?.removeEventListener('blur', onBlur);
+}
+function addEventListeners() {
+    mBtn.value?.addEventListener('mouseenter', onMouseEnter);
+    mBtn.value?.addEventListener('mouseleave', onMouseLeave);
+
+    mBtn.value?.addEventListener('mousedown', onMouseDown);
+    mBtn.value?.addEventListener('mouseup', onMouseUp);
+
+    mBtn.value?.addEventListener('focusin', onFocusIn);
+    mBtn.value?.addEventListener('blur', onBlur);
+}
+const onMouseEnter = () => mBtn.value!.style.backgroundColor = shades.value[ 0 ];
+const onMouseLeave = () => mBtn.value!.style.backgroundColor = props.color;
+const onMouseDown = () => mBtn.value!.style.backgroundColor = shades.value[ 1 ]; mousedown.value = true;
+const onMouseUp = () => mBtn.value!.style.backgroundColor = shades.value[ 0 ];
+const onFocusIn = () => {
+    if (!mousedown.value)
+        mBtn.value!.style.boxShadow = `0px 0px 0px white, 0px 0px 0px 1.5px ${props.color}`;
+    mousedown.value = false;
+};
+const onBlur = () => mBtn.value!.style.boxShadow = ''; mousedown.value = false;
+
+const handleSize = computed(() => {
+    if (!props.size)
+        return btnSizes.md;
+    return (btnSizes as any)[ props.size ];
 });
 
-const handleBtnShape = computed(() => {
-    if (!btnProps.shape)
-        return btnShapes.default;
-    return (btnShapes as any)[ btnProps.shape ];
+const handleShape = computed(() => {
+    if (!props.shape)
+        return shapes.default;
+    return (shapes as any)[ props.shape ];
 });
 
-const handleBtnLoadingState = computed(() => {
-    if (typeof btnProps.loading === 'string' && btnProps.loading == 'false')
+const handleLoadingState = computed(() => {
+    if (typeof props.loading === 'string' && props.loading == 'false')
         return false;
-    return Boolean(btnProps.loading);
+    return Boolean(props.loading);
 });
 
-const handleBtnTransparency = computed(() => {
-    if (typeof btnProps.transparent === 'string' && btnProps.transparent == 'false')
+const handleTransparency = computed(() => {
+    if (typeof props.transparent === 'string' && props.transparent == 'false')
         return false;
-    if (Boolean(btnProps.transparent))
+    if (Boolean(props.transparent))
         return 'm-btn-transparent';
 });
 
 const isCustomColor: ComputedRef<boolean> = computed(() => {
-    if (typeof handleBtnColor.value == 'string')
+    if (typeof handleColor.value == 'string')
         return false;
 
-    return typeof handleBtnColor.value == 'object'
-        && (handleBtnColor as any).value?.backgroundColor?.startsWith('#')
-        || (handleBtnColor as any).value?.backgroundColor?.startsWith('rgb');
+    return typeof handleColor.value == 'object'
+        && (handleColor as any).value?.backgroundColor?.startsWith('#')
+        || (handleColor as any).value?.backgroundColor?.startsWith('rgb');
 })
 
 </script>
