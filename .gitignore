@@ -36,3 +36,4 @@ dist-ssr
 *.sw?
 .DS_Store
 vue-m-ui/package-lock.json
+vue-m-ui/npmCommands.md
