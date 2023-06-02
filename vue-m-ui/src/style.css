@@ -3,11 +3,27 @@
 	--m-shadow-none: 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgb(0 0 0 / 0.0), 0 2px 4px -2px rgb(0 0 0 / 0.0);
 
 	--m-focus-shadow-border-thickness: 0 0 0 1.5px;
+	--m-focus-shadow-border-color: #f1f1f1;
 
 	--m-input-icon-padding: 2.5rem;
-
 	--m-input-icon-w: 1.25rem;
 	--m-input-icon-h: 1.25rem;
+
+	--m-switch-left: calc(100% - 1rem);
+	--m-switch-left-checked: calc(100% - 1rem);
+
+	/* TODO: Recreate the colors as vars */
+	/* COLORS */
+	--m-bg-light: rgb(241 241 241);
+	--m-bg-dark: rgb(24 25 26);
+	--m-bg-dark-2: rgb(45, 45, 50);
+	--m-bg-dark-3: rgb(55, 55, 55);
+
+	/* TODO: Create more colors */
+	--m-color-lightPink: #ffccff;
+
+	/* Switch colors */
+	--m-switch-custom-knob-color: '';
 }
 
 *{
@@ -25,7 +41,7 @@
 	@apply 	flex relative border-none font-semibold leading-6 
 			active:shadow-none cursor-pointer 
 			disabled:pointer-events-none disabled:outline-none
-	;
+;
 
 	box-shadow: var(--m-shadow-default);
 
@@ -54,6 +70,21 @@
 }
 
 /* Button Styles */
+.m-btn-light {
+	@apply m-text-dark bg-[#f1f1f1] hover:bg-zinc-100 active:bg-zinc-50
+}
+.m-btn-light:focus-visible {
+	box-shadow: 0px 0px 0px 1.5px rgb(241 241 241);
+	outline-color: #404040;
+}
+.m-btn-dark {
+	@apply m-text-light bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600
+}
+.m-btn-dark:focus-visible {
+	box-shadow: 0px 0px 0px 1.5px rgb(38 38 38);
+	outline-color: rgb(229 229 229);
+}
+
 .m-btn-primary {
 	@apply m-text-light bg-blue-600 hover:bg-blue-500 active:bg-blue-400
 }
@@ -80,13 +111,6 @@
 	box-shadow: 0px 0px 0px 1.5px rgb(5 150 105);
 }
 
-.m-btn-danger {
-	@apply m-text-light bg-red-600 hover:bg-red-500 active:bg-red-400
-}
-.m-btn-danger:focus-visible {
-	box-shadow: 0px 0px 0px 1.5px rgb(220 38 38);
-}
-
 .m-btn-warning {
 	@apply m-text-light bg-orange-600 hover:bg-orange-500 active:bg-orange-400
 }
@@ -94,31 +118,18 @@
 	box-shadow: 0px 0px 0px 1.5px rgb(234 88 12);
 }
 
+.m-btn-danger {
+	@apply m-text-light bg-red-600 hover:bg-red-500 active:bg-red-400
+}
+.m-btn-danger:focus-visible {
+	box-shadow: 0px 0px 0px 1.5px rgb(220 38 38);
+}
+
 .m-btn-info {
 	@apply m-text-light bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-400
 }
 .m-btn-info:focus-visible {
 	box-shadow: 0px 0px 0px 1.5px rgb(8 145 178);
-}
-
-.m-btn-light {
-	@apply m-text-dark bg-[#f1f1f1] hover:bg-zinc-100 active:bg-zinc-50
-}
-.m-btn-light:focus-visible {
-	box-shadow: 0px 0px 0px 1.5px rgb(241 241 241);
-	outline-color: #404040;
-}
-
-.m-btn-dark {
-	@apply m-text-light bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600
-}
-.m-btn-dark:focus-visible {
-	box-shadow: 0px 0px 0px 1.5px rgb(38 38 38);
-	outline-color: rgb(229 229 229);
-}
-
-.m-btn-pink:focus-visible {
-	box-shadow: 0px 0px 0px 1.5px rgb(219 39 119);
 }
 
 .m-btn-indigo {
@@ -194,7 +205,7 @@
 	@apply 	w-full border border-solid shadow-md transition-shadow
 			outline outline-2 outline-transparent 
 			focus:shadow-none focus:border-blue-600 z-10
-		;
+	;
 	height: -webkit-fill-available;
 }
 .m-input:disabled {
@@ -465,6 +476,10 @@
 	@apply stroke-2
 }
 
+.m-icons-eye {
+	@apply absolute w-5 h-5 z-10 top-2/4 right-2 translate-y-[-50%] cursor-pointer
+}
+
 /* Loading */
 .m-loading {
 	@apply relative pointer-events-none opacity-30 
@@ -478,6 +493,228 @@
 .m-loading-icon-handle {
 	@apply absolute w-full h-full bg-black/75
 }
+
+/* Switch */
+.m-switch {
+	@apply 	relative cursor-pointer appearance-none rounded transition-all
+			outline outline-1 outline-transparent outline-offset-0 
+			focus-visible:outline-white active:shadow-none 
+			disabled:pointer-events-none disabled:shadow-none disabled:filter disabled:brightness-[75%] 
+;
+			
+	/* TODO: Match the shadow color with the switch color on focus visible */
+	box-shadow: var(--m-shadow-default);
+}
+.m-switch::before {
+	@apply 	block absolute content-[''] top-2/4 translate-y-[-50%] rounded cursor-pointer transition-[left,width,height,filter,background-color]
+			bg-[#f1f1f1] border-none
+;
+	left: var(--m-switch-left);
+}
+
+/* Switch Colors */
+.m-switch-light {
+	@apply bg-[#f1f1f1] focus-within:outline-[var(--m-bg-dark-2)];
+	--m-focus-shadow-border-color: #f1f1f1;
+}
+.m-switch-light::before {
+	@apply bg-[var(--m-bg-dark-2)];
+}
+
+.m-switch-dark {
+	@apply bg-slate-600;
+	--m-focus-shadow-border-color: #475569;
+}
+
+.m-switch-primary {
+	@apply bg-blue-600;
+	--m-focus-shadow-border-color: #2563eb;
+}
+
+.m-switch-secondary {
+	@apply bg-slate-600;
+	--m-focus-shadow-border-color: #475569;
+}
+.m-switch-success {
+	@apply bg-emerald-600;
+	--m-focus-shadow-border-color: #059669;
+}
+.m-switch-warning {
+	@apply bg-orange-600;
+	--m-focus-shadow-border-color: #ea580c;
+}
+.m-switch-danger {
+	@apply bg-red-600;
+	--m-focus-shadow-border-color: #dc2626;
+}
+.m-switch-info {
+	@apply bg-cyan-600;
+	--m-focus-shadow-border-color: #0891b2;
+}
+.m-switch-indigo {
+	@apply bg-indigo-600;
+	--m-focus-shadow-border-color: #4e46e5;
+}
+.m-switch-purple {
+	@apply bg-purple-600;
+	--m-focus-shadow-border-color: #9333ea;
+}
+.m-switch-pink {
+	@apply bg-pink-600;
+	--m-focus-shadow-border-color: #db2777;
+}
+
+.m-switch-custom-color::before {
+	@apply bg-[var(--m-switch-custom-knob-color)]
+}
+
+/* Switch Sizes */
+.m-switch-size-2xs {
+	@apply h-2 w-8;
+	--m-switch-left-checked: calc(100% - 6px);
+}
+.m-switch-size-2xs::before {
+	@apply h-1 w-1;
+	--m-switch-left: 2px;
+}
+.m-switch-size-2xs:active::before {
+	width: calc( 0.75rem + 5% );
+}
+.m-switch-size-2xs:checked::before {
+	--m-switch-left-checked: calc(100% - 6px);
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-2xs:active:checked::before {
+	left: calc( 100% - 0.90rem - 5% );
+}
+.m-switch-size-2xs:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-xs {
+	@apply h-4 w-9;
+	--m-switch-left-checked: calc(100% - 14.5px);
+}
+.m-switch-size-xs::before {
+	@apply h-3 w-3 ;
+	--m-switch-left: 2.5px;
+}
+.m-switch-size-xs:active::before {
+	width: calc( 1rem + 5% );
+}
+.m-switch-size-xs:checked::before {
+	--m-switch-left-checked: calc(100% - 14.5px);
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-xs:active:checked::before {
+	left: calc(100% - 1.15rem - 5%);
+}
+.m-switch-size-xs:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-sm {
+	@apply h-5 w-10;
+	--m-switch-left-checked: calc(100% - 1rem);
+}
+.m-switch-size-sm::before {
+	@apply h-3 w-3 ;
+	--m-switch-left: 0.25rem;
+}
+.m-switch-size-sm:active::before {
+	width: calc( 1rem + 5% );
+}
+.m-switch-size-sm:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-sm:active:checked::before {
+	left: calc(100% - 1.25rem - 5%);
+}
+.m-switch-size-sm:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-md {
+	@apply h-7 w-12;
+	--m-switch-left-checked: calc(100% - 1.3rem);
+}
+.m-switch-size-md::before {
+	@apply h-5 w-4 ;
+	--m-switch-left: calc(0% + 0.3rem);
+}
+.m-switch-size-md:active::before {
+	width: calc( 1.25rem + 5% );
+}
+.m-switch-size-md:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-md:active:checked::before {
+	left: calc(100% - 1.55rem - 5%);
+}
+.m-switch-size-md:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-lg {
+	@apply h-10 w-16;
+	--m-switch-left-checked: calc(100% - 1.825rem);
+}
+.m-switch-size-lg::before {
+	@apply h-8 w-6 ;
+	--m-switch-left: calc(0% + 0.3rem);
+}
+.m-switch-size-lg:active::before {
+	width: calc( 1.75rem + 5% );
+}
+.m-switch-size-lg:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-lg:active:checked::before {
+	left: calc(100% - 2.0575rem - 5%);
+}
+.m-switch-size-lg:focus-visible {
+	box-shadow: 0px 0px 0px 4px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-xl {
+	@apply h-14 w-[5.5rem] outline-2;
+	--m-switch-left-checked: calc(100% - 2.75rem);
+}
+.m-switch-size-xl::before {
+	@apply h-9 w-8;
+	--m-switch-left: 0.75rem;
+}
+.m-switch-size-xl:active::before {
+	width: calc( 2.25rem + 5% );
+}
+.m-switch-size-xl:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-xl:active:checked::before {
+	left: calc(100% - 3rem - 5%);
+}
+.m-switch-size-xl:focus-visible {
+	box-shadow: 0px 0px 0px 5px var(--m-focus-shadow-border-color);
+}
+
+/* Switch Loading Animation */
+@keyframes switchLoading { 
+	to { left: var(--m-switch-left-checked) } 
+}
+.m-switch-loading {
+	@apply pointer-events-none shadow-none;
+}
+.m-switch-loading:checked::before { 
+	left: var(--m-switch-left);
+}
+/* NOTE: This is needed for the animation to not jump on the initial position based on checked state */
+.m-switch-loading::before {
+	animation: switchLoading 0.5s ease-in-out 0s infinite alternate;
+}
+.m-switch-loading:checked::before {
+	animation: switchLoading 0.5s ease-in-out 0s infinite alternate-reverse;
+}
+
 
 /* General */
 /* General Text Colors */
