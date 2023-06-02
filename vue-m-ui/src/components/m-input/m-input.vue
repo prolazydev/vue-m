@@ -1,18 +1,25 @@
 <template>
-    <div    class="m-input-main" 
-            :class="[ { 'm-loading': handleLoadingState }, { 'm-text-bold': handleBoldText } ]">
-        <label v-if="label" :for="id || label" class="m-input-label" :class="[ handleLabelColor, ]" :style="labelSize">
+    <div class="m-input-main" :id="containerId" :class="[ { 'm-loading': handleLoadingState }, { 'm-text-bold': handleBoldText } ]">
+        <label  v-if="label" :for="id || label" class="m-input-label" :id="labelId"
+                :class="[ handleLabelColor, labelClass ]" 
+                :style="[labelSize!, (labelColor.startsWith('#') || labelColor.startsWith('rgb')) ? handleLabelColor : '', ]">
             {{ label }}
         </label>
         <div class="m-input-container">
-            <input ref="m_input"
-                :class="[ 'm-input', { 'm-input-icon': dynamicSVG(icon) },
-                    handleColor, handleShape, (!textColor.startsWith('#') && !textColor.startsWith('rgb')) ? handleTextColor : '', handleSize, ]"
-                :style="[ (textColor.startsWith('#') || textColor.startsWith('rgb')) ? (handleTextColor as StyleValue) : '', (color.startsWith('#') || color.startsWith('rgb')) ? (customColor as StyleValue) : '' ]"
-                :placeholder="placeholder" :type="type" :name="id" :id="id || label" :disabled="(disabled as boolean)" />
+            <input  ref="m_input" :autofocus="(autoFocus as boolean)" 
+                    :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+                    :class="[ 'm-input', { 'm-input-icon': dynamicSVG(icon) }, { 'm-input-password': (type === 'password') },
+                        handleColor, handleShape, (!textColor.startsWith('#') && !textColor.startsWith('rgb')) ? handleTextColor : '', handleSize, ]"
+                    :style="[ (textColor.startsWith('#') || textColor.startsWith('rgb')) ? (handleTextColor as StyleValue) : '', (color.startsWith('#') || color.startsWith('rgb')) ? (customColor as StyleValue) : '' ]"
+                    :placeholder="placeholder" :type="type" :name="id" :id="id || label" :disabled="(disabled as boolean)" />
 
-
-            <span v-if="(type === 'email')" class="m-input-email-progress-bar" :class="{ 'm-animation-shake-error': playShakeError }" :style="validEmail" />
+            <span   v-if="(type === 'email')" class="m-input-email-progress-bar"
+                    :class="{ 'm-animation-shake-error': playShakeError }" 
+                    :style="handleValidationStyle" />
+            <component  v-if="type === 'password'" 
+                        @click="togglePasswordVisibility" 
+                        :show-password="showPassword" 
+                        :is="dynamicSVG('password-icons')" />
 
             <span v-if="dynamicSVG(icon)" class="m-input-border"></span>
             <component v-if="dynamicSVG(icon)" :is="dynamicSVG(icon)" :class="[ { 'm-icon-bold': handleBoldText } ]" />
@@ -21,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { StyleValue, computed, onMounted, ref } from 'vue';
+import { StyleValue, computed, reactive, ref } from 'vue';
 import { dynamicSVG, isValidEmail } from '@/utils';
 import { shapes, textColors } from '@/common';
 import { colors, labelSizes, sizes } from './props';
@@ -33,53 +40,24 @@ const labelSize = ref<StyleValue>();
 const isEmail = ref(false);
 const validEmail = ref<StyleValue>();
 const playShakeError = ref(false);
-
-onMounted(() => {
-    const onInput = () => {
-        isEmail.value = isValidEmail(m_input.value?.value);
-        if (isEmail.value) 
-            validEmail.value = {
-               backgroundColor: 'rgb(4, 120, 87)'
-            }
-        else {
-            validEmail.value = {
-                backgroundColor: 'rgb(185, 28, 28)',
-                transform: 'translate(0px)',
-                animation: 'shakeError 0.82s cubic-bezier(.36,.07,.19,.97) 0s 1 normal forwards'
-            }
-        }
-    }
-    const onKeyUpEnter = (e: KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            console.log(isEmail.value);
-            console.log(playShakeError.value);
-            if (!isEmail.value) {
-                if (playShakeError.value)
-                    return;
-                playShakeError.value = true;
-                setTimeout(() => playShakeError.value = false, 850);
-            }
-        }
-    }
-    
-    if (props.type === 'email') {
-        m_input.value?.addEventListener('input', onInput);
-        m_input.value?.addEventListener('keyup', onKeyUpEnter);
-    }
-    else {
-        m_input.value?.removeEventListener('input', onInput);
-        m_input.value?.removeEventListener('keyup', onKeyUpEnter);
-    }
+const playedOnce = ref(false);
+const showPassword = ref(false);
+const validationStyle = reactive({
+    backgroundColor: '',
+    transform: ''
 });
 
 const props = defineProps({
-    id: {
-        type: String,
-    },
-    label: {
-        type: String,
-    },
+	modelValue: String,
+    id: String,
+    containerId: String,
+    label: String,
+    labelId: String,
     labelColor: {
+        type: String,
+        default: 'default',
+    },
+    labelClass: {
         type: String,
         default: 'default',
     },
@@ -127,14 +105,75 @@ const props = defineProps({
         type: String,
         default: 'loading-circle'
     },
-    // TODO: autoFocusing
+    persistentValidation: {
+        type: [ Boolean, String ],
+        default: false,
+    },
     autoFocus: {
         type: [ Boolean, String ],
         default: false,
     },
 });
+defineEmits([ 'update:modelValue' ])
 
+// #region input validation 
+const handleValidationStyle = computed<StyleValue>(() => {
+    validEmail.value = validationStyle as StyleValue;
 
+    if (props.persistentValidation)
+        validationStyle.transform = 'translate(0px)';
+    else
+        validationStyle.transform = '';
+
+    if (props.type === 'email') {
+        m_input.value?.addEventListener('input', onInput);
+        m_input.value?.addEventListener('keyup', onKeyUpEnter);
+    } else {
+        m_input.value?.removeEventListener('input', onInput);
+        m_input.value?.removeEventListener('keyup', onKeyUpEnter);
+    }
+
+    return validationStyle;
+});
+const onInput = () => {
+    if (!m_input.value?.value && !props.persistentValidation) 
+        return validationStyle.transform = 'translateY(-25px)';
+    isEmail.value = isValidEmail(m_input.value?.value);
+    if (isEmail.value) {
+        validationStyle.backgroundColor = 'rgb(4, 120, 87)';
+        validationStyle.transform = props.persistentValidation ? 'translate(0px)' : '';
+        playedOnce.value = false;
+    }
+    else {
+        validationStyle.backgroundColor = 'rgb(185, 28, 28)';
+        validationStyle.transform = 'translate(0px)';
+        if (!playedOnce.value) {
+            playShakeErrorAnimation();
+            playedOnce.value = true;
+        }
+    }
+};
+const onKeyUpEnter = (e: KeyboardEvent) => {
+    if (e.key === 'Enter')
+        playShakeErrorAnimation();
+};
+function playShakeErrorAnimation() {
+    if (!isEmail.value) {
+        if (playShakeError.value)
+            return;
+        playShakeError.value = true;
+        setTimeout(() => playShakeError.value = false, 850);
+    }
+}
+function togglePasswordVisibility() {
+    if (showPassword.value) 
+        m_input.value!.type = "text"
+    else 
+        m_input.value!.type = "password"
+
+    showPassword.value = !showPassword.value;
+}
+// #endregion
 
 const handleColor = computed<string>(() => {
     removeEventListeners();
@@ -169,6 +208,8 @@ const handleTextColor = computed<string | StyleValue>(() => {
 const handleLabelColor = computed<string>(() => {
     if (!props.labelColor)
         return textColors.default;
+    if (props.labelColor.startsWith('#') || props.labelColor.startsWith('rgb'))
+        return { color: props.labelColor } as StyleValue;
     return (textColors as any)[ props.labelColor ];
 });
 
@@ -200,7 +241,4 @@ const handleSize = computed<string>(() => {
     };
     return (sizes as any)[ props.size ];
 });
-
-
-
 </script>
