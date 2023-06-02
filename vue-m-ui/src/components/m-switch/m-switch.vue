@@ -14,6 +14,7 @@ import { StyleValue, computed, ref } from 'vue';
 import { colors, sizes } from './props';
 
 const m_switch = ref<HTMLElement>();
+// TODO: Add tab indexing
 const props = defineProps({
 	modelValue: Boolean,
 	color: {

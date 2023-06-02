@@ -6,12 +6,13 @@
             {{ label }}
         </label>
         <div class="m-input-container">
-            <input  ref="m_input" :autofocus="(autoFocus as boolean)" 
-                    :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+            <input  ref="m_input" :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+                    :id="id || label" :name="id" :autofocus="(autoFocus as boolean)" :placeholder="placeholder" :type="type" 
                     :class="[ 'm-input', { 'm-input-icon': dynamicSVG(icon) }, { 'm-input-password': (type === 'password') },
-                        handleColor, handleShape, (!textColor.startsWith('#') && !textColor.startsWith('rgb')) ? handleTextColor : '', handleSize, ]"
+                        handleColor, handleShape, (!textColor.startsWith('#') && !textColor.startsWith('rgb')) ? handleTextColor : '', 
+                        handleSize, ]"
                     :style="[ (textColor.startsWith('#') || textColor.startsWith('rgb')) ? (handleTextColor as StyleValue) : '', (color.startsWith('#') || color.startsWith('rgb')) ? (customColor as StyleValue) : '' ]"
-                    :placeholder="placeholder" :type="type" :name="id" :id="id || label" :disabled="(disabled as boolean)" />
+                    :disabled="(disabled as boolean)" />
 
             <span   v-if="(type === 'email')" class="m-input-email-progress-bar"
                     :class="{ 'm-animation-shake-error': playShakeError }" 
@@ -47,6 +48,7 @@ const validationStyle = reactive({
     transform: ''
 });
 
+// TODO: Add tab indexing
 const props = defineProps({
 	modelValue: String,
     id: String,
@@ -165,12 +167,12 @@ function playShakeErrorAnimation() {
         setTimeout(() => playShakeError.value = false, 850);
     }
 }
-function togglePasswordVisibility() {
-    if (showPassword.value) 
-        m_input.value!.type = "text"
-    else 
-        m_input.value!.type = "password"
 
+function togglePasswordVisibility() {
+    if (m_input.value!.type === 'password')
+        m_input.value!.type = 'text';
+    else
+        m_input.value!.type = 'password';
     showPassword.value = !showPassword.value;
 }
 // #endregion

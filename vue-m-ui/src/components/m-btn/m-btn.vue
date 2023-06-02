@@ -1,7 +1,7 @@
 <template>
-    <button ref="mBtn"
-        :class="[ !isCustomColor ? handleColor : 'm-btn', handleSize, handleShape, handleTransparency, handleTextColor ]"
-        :style="isCustomColor ? (handleColor as StyleValue) : ''" :disabled="handleLoadingState || (disabled as boolean)">
+    <button ref="mBtn" :disabled="handleLoadingState || (disabled as boolean)"
+            :class="[ !isCustomColor ? handleColor : 'm-btn', handleSize, handleShape, handleTransparency, handleTextColor ]"
+            :style="isCustomColor ? (handleColor as StyleValue) : ''" >
         <div :class="{ 'm-loading': handleLoadingState }" class="m-btn-content">
             <template v-if="props.text"> {{ props.text }} </template>
             <slot v-else />
@@ -23,6 +23,7 @@ const mBtn = ref<HTMLButtonElement | null>(null);
 const shades = ref<string[]>([]);
 const mousedown = ref(false);
 
+// TODO: Add tab tab-indexing
 const props = defineProps({
     text: {
         type: String,
@@ -62,13 +63,13 @@ const props = defineProps({
 });
 
 // Prop Handling
-const handleTextColor: ComputedRef<String> = computed(() => {
+const handleTextColor= computed<string>(() => {
     if (!props.textColor)
         return '';
     return (textColors as any)[ props.textColor ];
 });
 
-const handleColor: ComputedRef<StyleValue | String[] | String | undefined> = computed(() => {
+const handleColor = computed<string | StyleValue>(() => {
     removeEventListeners();
     if (!props.color)
         return btnColors.default + ' ' + btnSizes.md;

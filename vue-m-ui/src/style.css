@@ -206,6 +206,7 @@
 			outline outline-2 outline-transparent 
 			focus:shadow-none focus:border-blue-600 z-10
 	;
+	font-weight: inherit;
 	height: -webkit-fill-available;
 }
 .m-input:disabled {
@@ -213,7 +214,8 @@
 }
 
 .m-input-container {
-	@apply w-full flex flex-col relative 
+	@apply w-full flex flex-col relative;
+	font-weight: inherit;
 }
 
 .m-input-container:disabled {
@@ -356,7 +358,9 @@
 }
 
 .m-input-label {
-	@apply text-left font-normal
+	@apply text-left;
+
+	font-weight: inherit;
 }
 
 /* Input Colors */
