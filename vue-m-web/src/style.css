@@ -41,5 +41,11 @@ body {
 
 .m-el {
 	@apply 	min-w-[12rem] p-10 flex flex-col gap-10 text-center justify-center items-center font-semibold text-2xl 
-			backdrop-blur-sm border-[6px] shadow-md hover:shadow-none transition-all
+			backdrop-blur-sm border-[6px] shadow-md hover:shadow-none transition-all;
 }
+
+
+.m-el-name {
+	@apply cursor-pointer underline-offset-[6px] underline hover:underline-offset-2 select-none transition-all duration-[250ms];
+}
+

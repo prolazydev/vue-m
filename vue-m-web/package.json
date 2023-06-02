@@ -12,6 +12,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@prolazydev/vue-m": "^0.3.0",
     "vue": "^3.2.47"
   },
   "devDependencies": {
