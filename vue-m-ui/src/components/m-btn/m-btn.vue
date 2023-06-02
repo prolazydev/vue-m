@@ -1,18 +1,16 @@
 <template>
-    <div>
-        <button ref="mBtn" id="myCustomBtn" color=""
-            :class="[ !isCustomColor ? handleColor : 'm-btn', handleSize, handleShape, handleTransparency, handleTextColor ]"
-            :style="isCustomColor ? (handleColor as StyleValue) : ''" :disabled="handleLoadingState || (disabled as boolean)">
-            <div :class="{ 'm-loading': handleLoadingState }" class="m-btn-content">
-                <template v-if="props.text"> {{ props.text }} </template>
-                <slot v-else />
-            </div>
+    <button ref="mBtn"
+        :class="[ !isCustomColor ? handleColor : 'm-btn', handleSize, handleShape, handleTransparency, handleTextColor ]"
+        :style="isCustomColor ? (handleColor as StyleValue) : ''" :disabled="handleLoadingState || (disabled as boolean)">
+        <div :class="{ 'm-loading': handleLoadingState }" class="m-btn-content">
+            <template v-if="props.text"> {{ props.text }} </template>
+            <slot v-else />
+        </div>
 
-            <template v-if="handleLoadingState">
-                <component v-if="dynamicSVG(loadingIcon)" :is="dynamicSVG(loadingIcon)"></component>
-            </template>
-        </button>
-    </div>
+        <template v-if="handleLoadingState">
+            <component v-if="dynamicSVG(loadingIcon)" :is="dynamicSVG(loadingIcon)"></component>
+        </template>
+    </button>
 </template>
 
 <script lang="ts" setup>
@@ -29,18 +27,10 @@ const props = defineProps({
     text: {
         type: String,
     },
-    /**
-    * Style of button (optional)
-    * @values default, primary, secondary, danger, warning, info and simple
-    */
     color: {
         type: String,
         default: 'default',
     },
-    /**
-    * Size of button (optional)
-    * @values sm, md, lg
-    */
     size: {
         type: String,
         default: 'md',
@@ -85,6 +75,7 @@ const handleColor: ComputedRef<StyleValue | String[] | String | undefined> = com
     if (props.color.startsWith('#') || props.color.startsWith('rgb') || props.color.startsWith('rgba')) {
         shades.value = createLighterShades(props.color);
         addEventListeners();
+
         return { backgroundColor: props.color };
     }
     return (btnColors as any)[ props.color ];
@@ -93,8 +84,12 @@ const handleColor: ComputedRef<StyleValue | String[] | String | undefined> = com
 function removeEventListeners() {
     mBtn.value?.removeEventListener('mouseenter', onMouseEnter);
     mBtn.value?.removeEventListener('mouseleave', onMouseLeave);
+
     mBtn.value?.removeEventListener('mousedown', onMouseDown);
     mBtn.value?.removeEventListener('mouseup', onMouseUp);
+
+    mBtn.value?.removeEventListener('keydown', onKeyDown);
+
     mBtn.value?.removeEventListener('focusin', onFocusIn);
     mBtn.value?.removeEventListener('blur', onBlur);
 }
@@ -105,19 +100,27 @@ function addEventListeners() {
     mBtn.value?.addEventListener('mousedown', onMouseDown);
     mBtn.value?.addEventListener('mouseup', onMouseUp);
 
+    mBtn.value?.addEventListener('keydown', onKeyDown);
+
     mBtn.value?.addEventListener('focusin', onFocusIn);
     mBtn.value?.addEventListener('blur', onBlur);
 }
 const onMouseEnter = () => mBtn.value!.style.backgroundColor = shades.value[ 0 ];
 const onMouseLeave = () => mBtn.value!.style.backgroundColor = props.color;
-const onMouseDown = () => mBtn.value!.style.backgroundColor = shades.value[ 1 ]; mousedown.value = true;
+const onMouseDown = () => { mBtn.value!.style.backgroundColor = shades.value[ 1 ]; mousedown.value = true; };
 const onMouseUp = () => mBtn.value!.style.backgroundColor = shades.value[ 0 ];
+
+const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Shift')
+        mBtn.value!.style.boxShadow = `0px 0px 0px white, 0px 0px 0px 1.5px ${props.color}`;
+}
+
 const onFocusIn = () => {
     if (!mousedown.value)
         mBtn.value!.style.boxShadow = `0px 0px 0px white, 0px 0px 0px 1.5px ${props.color}`;
     mousedown.value = false;
 };
-const onBlur = () => mBtn.value!.style.boxShadow = ''; mousedown.value = false;
+const onBlur = () => { mBtn.value!.style.boxShadow = ''; mousedown.value = false; };
 
 const handleSize = computed(() => {
     if (!props.size)
