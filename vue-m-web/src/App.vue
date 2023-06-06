@@ -4,17 +4,38 @@
 			<h1 id="mainTitle" class="m-test-title"></h1>
 		</div>
 		<div class="hr-line">
-			<hr class="border-t-2 border-dashed ">
+			<hr class="w-4/5 m-auto mt-3 border-t-[6px] border-dashed">
 		</div>
 		<div class="ui-elements m-auto w-4/5 flex flex-wrap gap-4 justify-between">
-			<div ref=btn_el class="m-el m-input-el ">
-				<p 	class="cursor-pointer underline-offset-[6px] underline hover:underline-offset-2 select-none transition-all duration-[250ms]">
+			<div ref=btn_el class="m-el m-input-el">
+				<p 	class="m-el-name">
 					Button
 				</p>
-				<m-btn 	:color='color?.color'
+				<m-btn 	:color='color?.color' 
 						:text-color="(color.color.startsWith('#') || color.color.startsWith('rgb')) ? 'light' : ''">
 					{{ color?.name }}
 				</m-btn>
+			</div>
+			<div class="m-el">
+				<p 	class="m-el-name" @click="persist = !persist">
+					Input
+				</p>
+				<div class="flex flex-col gap-2 justify-center">
+					<m-input v-model="inputShowcaseValue" id="test" type="password" 
+						color="#ff4056" placeholder="Type something :>" :persistentValidation="persist" />
+					<input 	class="text-base placeholder:text-center bg-transparent"
+							v-model="inputShowcaseValue" type="text" readonly disabled>
+				</div>
+			</div>
+
+			<div class="m-el">
+				<p 	class="m-el-name">
+					Switch
+				</p>
+				<div class="flex flex-col gap-2 justify-center items-center">
+					<m-switch v-model="switchVal" />
+					<p @click="switchVal = true">{{ switchVal }}</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -28,7 +49,10 @@ import { Color } from './types';
 const color = ref<Color>({ name: 'default', color: 'default' });
 const btn_el = ref<HTMLButtonElement>();
 const elIntervalId = ref<NodeJS.Timer>();
+const switchVal = ref<boolean>(false);
 
+const inputShowcaseValue = ref('');
+const persist = ref(false);
 onMounted(() => {
 	const mainTitle = document.getElementById('mainTitle')!;
 	const uiElements = document.getElementsByClassName('m-el')!;
@@ -48,6 +72,8 @@ onMounted(() => {
 
 	for (let i = 0; i < uiElements.length; i++) 
 		uiElements[ i ].addEventListener('mouseleave', () => clearInterval(elIntervalId.value));
+
+	// TODO: #2f4f4f for the light bg on input
 });
 
 </script>

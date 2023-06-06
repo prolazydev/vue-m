@@ -1,6 +1,29 @@
 :root {
 	--m-shadow-default: 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 	--m-shadow-none: 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgb(0 0 0 / 0.0), 0 2px 4px -2px rgb(0 0 0 / 0.0);
+
+	--m-focus-shadow-border-thickness: 0 0 0 1.5px;
+	--m-focus-shadow-border-color: #f1f1f1;
+
+	--m-input-icon-padding: 2.5rem;
+	--m-input-icon-w: 1.25rem;
+	--m-input-icon-h: 1.25rem;
+
+	--m-switch-left: calc(100% - 1rem);
+	--m-switch-left-checked: calc(100% - 1rem);
+
+	/* TODO: Recreate the colors as vars */
+	/* COLORS */
+	--m-bg-light: rgb(241 241 241);
+	--m-bg-dark: rgb(24 25 26);
+	--m-bg-dark-2: rgb(45, 45, 50);
+	--m-bg-dark-3: rgb(55, 55, 55);
+
+	/* TODO: Create more colors */
+	--m-color-lightPink: #ffccff;
+
+	/* Switch colors */
+	--m-switch-custom-knob-color: '';
 }
 
 *{
@@ -10,7 +33,6 @@
 
 	font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-    font-size: 100%;
     font-weight: 600;
 }
 
@@ -19,7 +41,7 @@
 	@apply 	flex relative border-none font-semibold leading-6 
 			active:shadow-none cursor-pointer 
 			disabled:pointer-events-none disabled:outline-none
-	;
+;
 
 	box-shadow: var(--m-shadow-default);
 
@@ -42,25 +64,39 @@
 /* Button Disabled */
 .m-btn:disabled {
 	@apply select-none shadow-none;
-	/* filter: brightness(0.75) */
 }
 .m-btn:disabled .m-btn-content {
 	@apply opacity-30 select-none
 }
 
 /* Button Styles */
+.m-btn-light {
+	@apply m-text-dark bg-[#f1f1f1] hover:bg-zinc-100 active:bg-zinc-50
+}
+.m-btn-light:focus-visible {
+	box-shadow: 0px 0px 0px 1.5px rgb(241 241 241);
+	outline-color: #404040;
+}
+.m-btn-dark {
+	@apply m-text-light bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600
+}
+.m-btn-dark:focus-visible {
+	box-shadow: 0px 0px 0px 1.5px rgb(38 38 38);
+	outline-color: rgb(229 229 229);
+}
+
 .m-btn-primary {
 	@apply m-text-light bg-blue-600 hover:bg-blue-500 active:bg-blue-400
 }
 .m-btn-primary:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(37 99 235);
+	box-shadow: 0px 0px 0px 1.5px rgb(37 99 235);
 }
 
 .m-btn-secondary {
 	@apply m-text-light bg-slate-600 hover:bg-slate-500 active:bg-slate-400
 }
 .m-btn-secondary:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(71 85 105);
+	box-shadow: 0px 0px 0px 1.5px rgb(71 85 105);
 }
 
 .m-btn-success {
@@ -68,59 +104,39 @@
 			shadow-emerald-600
 }
 .m-btn-success:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(5 150 105);
+	box-shadow: 0px 0px 0px 1.5px rgb(5 150 105);
 }
 
 .m-btn-success:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(5 150 105);
-}
-
-.m-btn-danger {
-	@apply m-text-light bg-red-600 hover:bg-red-500 active:bg-red-400
-}
-.m-btn-danger:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(220 38 38);
+	box-shadow: 0px 0px 0px 1.5px rgb(5 150 105);
 }
 
 .m-btn-warning {
 	@apply m-text-light bg-orange-600 hover:bg-orange-500 active:bg-orange-400
 }
 .m-btn-warning:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(234 88 12);
+	box-shadow: 0px 0px 0px 1.5px rgb(234 88 12);
+}
+
+.m-btn-danger {
+	@apply m-text-light bg-red-600 hover:bg-red-500 active:bg-red-400
+}
+.m-btn-danger:focus-visible {
+	box-shadow: 0px 0px 0px 1.5px rgb(220 38 38);
 }
 
 .m-btn-info {
 	@apply m-text-light bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-400
 }
 .m-btn-info:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(8 145 178);
-}
-
-.m-btn-light {
-	@apply m-text-dark bg-[#f1f1f1] hover:bg-zinc-100 active:bg-zinc-50
-}
-.m-btn-light:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(241 241 241);
-	outline-color: #404040;
-}
-
-.m-btn-dark {
-	@apply m-text-light bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600
-}
-.m-btn-dark:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(38 38 38);
-	outline-color: rgb(229 229 229);
-}
-
-.m-btn-pink:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(219 39 119);
+	box-shadow: 0px 0px 0px 1.5px rgb(8 145 178);
 }
 
 .m-btn-indigo {
 	@apply m-text-light bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 
 }
 .m-btn-indigo:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(79 70 229);
+	box-shadow: 0px 0px 0px 1.5px rgb(79 70 229);
 }
 /* TODO: Glowing effect for all buttons */
 /* .m-btn-indigo-glow {
@@ -137,7 +153,7 @@
 	@apply m-text-light bg-purple-600 hover:bg-purple-500 active:bg-purple-400
 }
 .m-btn-purple:focus-visible {
-	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(147 51 234);
+	box-shadow: 0px 0px 0px 1.5px rgb(147 51 234);
 }
 
 .m-btn-pink {
@@ -146,7 +162,6 @@
 .m-btn-pink:focus-visible {
 	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px rgb(219 39 119);
 }
-
 
 /* Button Sizes */
 .m-btn-size-xs {
@@ -171,90 +186,566 @@
 	@apply px-11 py-10 text-5xl leading-6 outline-2 outline-offset-[-4px]
 }
 
-/* Button shapes */
-.m-btn-shape-default {
-	@apply rounded-md
-}
-.m-btn-shape-square {
-	@apply rounded-none
-}
-.m-btn-shape-round {
-	@apply rounded-full
-}
-.m-btn-shape-pill {
-	@apply rounded-2xl
-}
-
 /* Button Transparency */
 .m-btn-transparent {
 	@apply 	bg-opacity-0 text-black
 			hover:bg-opacity-70
 }
-
+/* Button Content */
 .m-btn-content {
 	@apply transition-[opacity]
 }
 
 /* Input */
 .m-input-main {
-	@apply h-[34px]
-}
-
-.m-input-content {
-	@apply relative h-full
+	@apply flex flex-col text-base font-normal transition-[opacity]
 }
 
 .m-input {
-	@apply 	pl-10 py-2 px-2 w-full border-[#6b7280] border border-solid rounded-md shadow-md 
+	@apply 	w-full border border-solid shadow-md transition-shadow
 			outline outline-2 outline-transparent 
-			focus:shadow-none focus:border-blue-600
-		;
+			focus:shadow-none focus:border-blue-600 z-10
+	;
+	font-weight: inherit;
 	height: -webkit-fill-available;
 }
-
-.m-input:focus {
-	box-shadow: 0px 0px 0px white, 0 0 0px 1px #2563eb;
+.m-input:disabled {
+	@apply select-none shadow-none opacity-30;
 }
 
-.m-input::placeholder {
+.m-input-container {
+	@apply w-full flex flex-col relative;
+	font-weight: inherit;
+}
+
+.m-input-container:disabled {
+	@apply overflow-hidden
+}
+
+/* For email inputs */
+.m-input-email-progress-bar {
+	@apply w-[90%] h-2 m-auto mt-2 rounded-3xl translate-y-[-25px] shadow transition-all;
+}
+.m-input:focus ~ .m-input-email-progress-bar {
+	@apply translate-y-0;
+}
+
+.m-animation-shake-error {
+	animation: shakeError 0.82s cubic-bezier(.36,.07,.19,.97) 0s 1 normal forwards;
+}
+
+@keyframes shakeError {
+	10%, 90% {
+		transform: translate3d(-1px, 0, 0);
+	}
+	  
+	20%, 80% {
+		transform: translate3d(2px, 0, 0);
+	}
+	
+	30%, 50%, 70% {
+		transform: translate3d(-4px, 0, 0);
+	}
+	
+	40%, 60% {
+		transform: translate3d(4px, 0, 0);
+	}
+}
+
+/* Input Sizes */
+.m-input-size-2xs {
+	@apply py-[2px] px-1 text-xs ;
+	--m-input-icon-padding: 1.75rem;
+}
+.m-input-size-2xs ~ .m-icon {
+	@apply left-1;
+	--m-input-icon-w: 1rem; 
+	--m-input-icon-h: 1rem; 
+}
+.m-input-size-2xs ~ .m-input-label {
+	background: red
+}
+.m-input-size-2xs ~ .m-input-border {
+	@apply left-[24px] h-3 w-[1px] pointer-events-none;
+}
+
+.m-input-size-xs {
+	@apply py-1 px-2 text-xs leading-5;
+	--m-input-icon-padding: 1.75rem;
+}
+.m-input-size-xs ~ .m-icon {
+	--m-input-icon-w: 1rem; 
+	--m-input-icon-h: 1rem; 
+}
+.m-input-size-xs ~ .m-input-border {
+	@apply left-6 h-4 w-[1px];
+}
+
+.m-input-size-sm {
+	@apply py-1 px-2 text-sm;
+	--m-input-icon-padding: 2rem;
+}
+.m-input-size-sm ~ .m-input-border {
+	@apply left-7 h-4
+}
+
+.m-input-size-md {
+	@apply py-[7px] px-2 text-base;
+	--m-input-icon-padding: 2.55rem;
+}
+.m-input-size-md ~ .m-input-border {
+	@apply left-[34px] h-[22px];
+
+}
+.m-input-size-md ~ .m-icon {
+	--m-input-icon-w: 1.5rem; 
+	--m-input-icon-h: 1.5rem; 
+}
+
+.m-input-size-lg {
+	@apply py-2 p-3 text-lg;
+	--m-input-icon-padding: 3rem;
+}
+.m-input-size-lg ~ .m-icon {
+	--m-input-icon-w: 2rem; 
+	--m-input-icon-h: 2rem; 
+}
+.m-input-size-lg ~ .m-input-border {
+	@apply left-10 h-7
+}
+
+.m-input-size-xl {
+	@apply py-3 p-4 text-2xl border-2;
+	--m-focus-shadow-border-thickness: 0 0 0 2px;
+	--m-input-icon-padding: 4rem;
+}
+.m-input-size-xl ~ .m-icon {
+	@apply left-2;
+	--m-input-icon-w: 2.6rem; 
+	--m-input-icon-h: 2.6rem; 
+}
+.m-input-size-xl ~ .m-input-border {
+	@apply left-14 h-9 w-[2px];
+}
+
+.m-input-size-2xl {
+	@apply py-4 p-5 text-3xl leading-4 border-4;
+	--m-focus-shadow-border-thickness: 0 0 0 2.5px;
+	--m-input-icon-padding: 5rem;
+}
+.m-input-size-2xl ~ .m-icon {
+	@apply left-3;
+	--m-input-icon-w: 3.25rem; 
+	--m-input-icon-h: 3.25rem; 
+}
+.m-input-size-2xl ~ .m-input-border {
+	@apply left-[70px] h-11 w-[2px];
+}
+
+/* .m-input:focus {
+	box-shadow: 0 0 0px 1px #2563eb;
+} */
+
+/* TODO: fix placeholder */
+/* .m-input::placeholder {
 	@apply absolute top-[5px] left-[40.5px]
-}
+} */
 
 .m-input-border {
-	@apply h-5 w-[1px] absolute top-[7px] left-8 border-gray-500 z-10 bg-gray-600
+	@apply h-5 w-[1px] absolute left-8 border-gray-500 z-10 bg-gray-600;
+	top: 50%;
+	transform: translateY(-50%)
+}
+
+.m-input-label {
+	@apply text-left;
+
+	font-weight: inherit;
+}
+
+/* Input Colors */
+.m-input-default {
+	@apply border-[#6b7280];
+} 
+.m-input-default:focus {
+	@apply border-blue-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #2563eb;
+}
+
+.m-input-primary {
+	@apply text-blue-600 placeholder:text-blue-300 border-blue-600
+} 
+.m-input-primary:focus {
+	@apply border-blue-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #2563eb;
+}
+
+.m-input-secondary {
+	@apply text-gray-600 placeholder:text-gray-300 border-[#bbbbbb];
+}
+.m-input-secondary:focus {
+	@apply border-[#bbbbbb];
+	box-shadow: var(--m-focus-shadow-border-thickness) #bbbbbb;
+}
+
+.m-input-success {
+	@apply text-emerald-600 placeholder:text-emerald-300 border-emerald-600;
+}
+.m-input-success:focus {
+	@apply border-emerald-600;
+	box-shadow: 0px 0px 0px 1.5px rgb(5, 150, 105);
+}
+
+.m-input-danger {
+	@apply text-red-600 placeholder:text-red-300 border-red-600;
+}
+.m-input-danger:focus {
+	@apply border-red-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #dc2626;
+}
+
+.m-input-warning {
+	@apply text-orange-600 placeholder:text-orange-300 border-orange-600;
+}
+.m-input-warning:focus {
+	@apply border-orange-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #ea580c;
+}
+
+.m-input-info {
+	@apply text-cyan-600 placeholder:text-cyan-300 border-cyan-600;
+}
+.m-input-info:focus {
+	@apply border-cyan-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #0891b2;
+}
+
+.m-input-dark {
+	@apply text-neutral-800 placeholder:text-neutral-300 border-neutral-800;
+}
+.m-input-dark:focus {
+	@apply border-neutral-800;
+	box-shadow: var(--m-focus-shadow-border-thickness) #262626;
+}
+
+.m-input-light {
+	@apply text-neutral-100 placeholder:text-neutral-300 border-neutral-100 bg-transparent;
+}
+.m-input-light:focus {
+	@apply border-neutral-100 bg-transparent;
+	box-shadow: var(--m-focus-shadow-border-thickness) #f5f5f5;
+}
+
+.m-input-indigo {
+	@apply text-indigo-600 placeholder:text-indigo-300 border-indigo-600;
+}
+.m-input-indigo:focus {
+	@apply border-indigo-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #4f46e5;
+}
+
+.m-input-purple {
+	@apply text-cyan-600 placeholder:text-cyan-300 border-cyan-600;
+}
+.m-input-purple:focus {
+	@apply border-cyan-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #0891b2;
+}
+
+.m-input-pink {
+	@apply text-pink-600 placeholder:text-pink-300 border-pink-600;
+}
+.m-input-pink:focus {
+	@apply border-pink-600;
+	box-shadow: var(--m-focus-shadow-border-thickness) #db2777;
+}
+
+/* Input Icon */
+.m-input-icon {
+	padding-left: var(--m-input-icon-padding);
 }
 
 /* Icons */
 .m-icon {
-	@apply w-5 h-5 absolute left-[5.5px] top-[8px]
+	@apply absolute left-[5.5px] pointer-events-none;
+
+	width: var(--m-input-icon-w);
+	height: var(--m-input-icon-h);
+
+	top: 50%;
+	transform: translateY(-47.5%)
+}
+
+.m-icon-bold {
+	@apply stroke-2
+}
+
+.m-icons-eye {
+	@apply absolute w-5 h-5 z-10 top-2/4 right-2 translate-y-[-50%] cursor-pointer
 }
 
 /* Loading */
 .m-loading {
-	@apply relative pointer-events-none opacity-30
+	@apply relative pointer-events-none opacity-30 
 }
 
 /* Loading Icons */
 .loading-icon {
-	@apply w-6 h-6 m-center-absolute text-white stroke-2
+	@apply w-3/4 h-3/4 m-center-absolute text-white stroke-2
 }
+
+.m-loading-icon-handle {
+	@apply absolute w-full h-full bg-black/75
+}
+
+/* Switch */
+.m-switch {
+	@apply 	relative cursor-pointer appearance-none rounded transition-all
+			outline outline-1 outline-transparent outline-offset-0 
+			focus-visible:outline-white active:shadow-none 
+			disabled:pointer-events-none disabled:shadow-none disabled:filter disabled:brightness-[75%] 
+;
+			
+	/* TODO: Match the shadow color with the switch color on focus visible */
+	box-shadow: var(--m-shadow-default);
+}
+.m-switch::before {
+	@apply 	block absolute content-[''] top-2/4 translate-y-[-50%] rounded cursor-pointer transition-[left,width,height,filter,background-color]
+			bg-[#f1f1f1] border-none
+;
+	left: var(--m-switch-left);
+}
+
+/* Switch Colors */
+.m-switch-light {
+	@apply bg-[#f1f1f1] focus-within:outline-[var(--m-bg-dark-2)];
+	--m-focus-shadow-border-color: #f1f1f1;
+}
+.m-switch-light::before {
+	@apply bg-[var(--m-bg-dark-2)];
+}
+
+.m-switch-dark {
+	@apply bg-slate-600;
+	--m-focus-shadow-border-color: #475569;
+}
+
+.m-switch-primary {
+	@apply bg-blue-600;
+	--m-focus-shadow-border-color: #2563eb;
+}
+
+.m-switch-secondary {
+	@apply bg-slate-600;
+	--m-focus-shadow-border-color: #475569;
+}
+.m-switch-success {
+	@apply bg-emerald-600;
+	--m-focus-shadow-border-color: #059669;
+}
+.m-switch-warning {
+	@apply bg-orange-600;
+	--m-focus-shadow-border-color: #ea580c;
+}
+.m-switch-danger {
+	@apply bg-red-600;
+	--m-focus-shadow-border-color: #dc2626;
+}
+.m-switch-info {
+	@apply bg-cyan-600;
+	--m-focus-shadow-border-color: #0891b2;
+}
+.m-switch-indigo {
+	@apply bg-indigo-600;
+	--m-focus-shadow-border-color: #4e46e5;
+}
+.m-switch-purple {
+	@apply bg-purple-600;
+	--m-focus-shadow-border-color: #9333ea;
+}
+.m-switch-pink {
+	@apply bg-pink-600;
+	--m-focus-shadow-border-color: #db2777;
+}
+
+.m-switch-custom-color::before {
+	@apply bg-[var(--m-switch-custom-knob-color)]
+}
+
+/* Switch Sizes */
+.m-switch-size-2xs {
+	@apply h-2 w-8;
+	--m-switch-left-checked: calc(100% - 6px);
+}
+.m-switch-size-2xs::before {
+	@apply h-1 w-1;
+	--m-switch-left: 2px;
+}
+.m-switch-size-2xs:active::before {
+	width: calc( 0.75rem + 5% );
+}
+.m-switch-size-2xs:checked::before {
+	--m-switch-left-checked: calc(100% - 6px);
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-2xs:active:checked::before {
+	left: calc( 100% - 0.90rem - 5% );
+}
+.m-switch-size-2xs:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-xs {
+	@apply h-4 w-9;
+	--m-switch-left-checked: calc(100% - 14.5px);
+}
+.m-switch-size-xs::before {
+	@apply h-3 w-3 ;
+	--m-switch-left: 2.5px;
+}
+.m-switch-size-xs:active::before {
+	width: calc( 1rem + 5% );
+}
+.m-switch-size-xs:checked::before {
+	--m-switch-left-checked: calc(100% - 14.5px);
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-xs:active:checked::before {
+	left: calc(100% - 1.15rem - 5%);
+}
+.m-switch-size-xs:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-sm {
+	@apply h-5 w-10;
+	--m-switch-left-checked: calc(100% - 1rem);
+}
+.m-switch-size-sm::before {
+	@apply h-3 w-3 ;
+	--m-switch-left: 0.25rem;
+}
+.m-switch-size-sm:active::before {
+	width: calc( 1rem + 5% );
+}
+.m-switch-size-sm:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-sm:active:checked::before {
+	left: calc(100% - 1.25rem - 5%);
+}
+.m-switch-size-sm:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-md {
+	@apply h-7 w-12;
+	--m-switch-left-checked: calc(100% - 1.3rem);
+}
+.m-switch-size-md::before {
+	@apply h-5 w-4 ;
+	--m-switch-left: calc(0% + 0.3rem);
+}
+.m-switch-size-md:active::before {
+	width: calc( 1.25rem + 5% );
+}
+.m-switch-size-md:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-md:active:checked::before {
+	left: calc(100% - 1.55rem - 5%);
+}
+.m-switch-size-md:focus-visible {
+	box-shadow: 0px 0px 0px 3px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-lg {
+	@apply h-10 w-16;
+	--m-switch-left-checked: calc(100% - 1.825rem);
+}
+.m-switch-size-lg::before {
+	@apply h-8 w-6 ;
+	--m-switch-left: calc(0% + 0.3rem);
+}
+.m-switch-size-lg:active::before {
+	width: calc( 1.75rem + 5% );
+}
+.m-switch-size-lg:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-lg:active:checked::before {
+	left: calc(100% - 2.0575rem - 5%);
+}
+.m-switch-size-lg:focus-visible {
+	box-shadow: 0px 0px 0px 4px var(--m-focus-shadow-border-color);
+}
+
+.m-switch-size-xl {
+	@apply h-14 w-[5.5rem] outline-2;
+	--m-switch-left-checked: calc(100% - 2.75rem);
+}
+.m-switch-size-xl::before {
+	@apply h-9 w-8;
+	--m-switch-left: 0.75rem;
+}
+.m-switch-size-xl:active::before {
+	width: calc( 2.25rem + 5% );
+}
+.m-switch-size-xl:checked::before {
+	left: var(--m-switch-left-checked);
+}
+.m-switch-size-xl:active:checked::before {
+	left: calc(100% - 3rem - 5%);
+}
+.m-switch-size-xl:focus-visible {
+	box-shadow: 0px 0px 0px 5px var(--m-focus-shadow-border-color);
+}
+
+/* Switch Loading Animation */
+@keyframes switchLoading { 
+	to { left: var(--m-switch-left-checked) } 
+}
+.m-switch-loading {
+	@apply pointer-events-none shadow-none;
+}
+.m-switch-loading:checked::before { 
+	left: var(--m-switch-left);
+}
+/* NOTE: This is needed for the animation to not jump on the initial position based on checked state */
+.m-switch-loading::before {
+	animation: switchLoading 0.5s ease-in-out 0s infinite alternate;
+}
+.m-switch-loading:checked::before {
+	animation: switchLoading 0.5s ease-in-out 0s infinite alternate-reverse;
+}
+
 
 /* General */
 /* General Text Colors */
-.m-text-dark {
-	@apply text-[#18191A]
-}
 .m-text-light {
 	@apply text-[#f2f2f2]
 }
+.m-text-dark {
+	@apply text-[#18191A] placeholder:text-zinc-300
+}
+
 .m-text-primary {
-	@apply text-sky-400
+	@apply text-sky-600
 }
 .m-text-secondary {
 	@apply text-[#bbbbbb]
 }
 .m-text-success {
-	@apply text-emerald-300;
+	@apply text-emerald-600;
+}
+.m-text-warning {
+	@apply text-orange-600;
+}
+.m-text-danger {
+	@apply text-red-600;
+}
+.m-text-info {
+	@apply text-cyan-600;
 }
 
 .m-text-white {
@@ -271,6 +762,25 @@
 }
 .m-text-pink {
 	@apply text-pink-600
+}
+
+/* General Text Boldness */
+.m-text-bold {
+	@apply font-bold
+}
+
+/* General Shapes */
+.m-general-shape-default {
+	@apply rounded-md
+}
+.m-general-shape-round {
+	@apply rounded-full
+}
+.m-general-shape-box {
+	@apply rounded-none
+}
+.m-general-shape-pill {
+	@apply rounded-2xl
 }
 
 /* Util Classes */
