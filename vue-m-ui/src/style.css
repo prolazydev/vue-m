@@ -24,6 +24,14 @@
 
 	/* Switch colors */
 	--m-switch-custom-knob-color: '';
+
+
+	/* CUSTOM BUTTON COLORS */
+	--m-btn-text-color: #fff;
+	--m-btn-bg-color: #fff;
+	--m-btn-bg-color-hover: #fff;
+	--m-btn-box-shadow: #fff;
+	--m-btn-bg-color-active: #fff;
 }
 
 *{
@@ -185,6 +193,27 @@
 .m-btn-size-3xl {
 	@apply px-11 py-10 text-5xl leading-6 outline-2 outline-offset-[-4px]
 }
+
+/* Button Custom Colors */
+.m-btn-custom-colors {
+	@apply 	transition-all text-[var(--m-btn-text-color)] bg-[var(--m-btn-bg-color)]
+			hover:bg-[var(--m-btn-bg-color-hover)] active:bg-[var(--m-btn-bg-color-active)] ;
+}
+
+.m-btn-custom-colors:focus-visible {
+	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px var(--m-btn-bg-color);
+}
+/* .m-btn-custom-colors:hover {
+	background-color: var(--m-btn-bg-color-active);
+} */
+
+/* .m-btn-custom-colors::placeholder {
+	color: var(--m-btn-bg-color);
+}
+
+.m-btn-custom-colors:focus {
+	border-color: var(--m-btn-bg-color);
+} */
 
 /* Button Transparency */
 .m-btn-transparent {
