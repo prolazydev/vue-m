@@ -1,37 +1,49 @@
 <template>
-    <div class="m-input-main" :id="containerId" :class="[ { 'm-loading': handleLoadingState }, { 'm-text-bold': handleBoldText } ]">
-        <label  v-if="label" :for="id || label" class="m-input-label" :id="labelId"
+    <div class="m-input-main" 
+		:id="containerId" 
+        :class="[ { 'm-loading': handleLoadingState }, { 'm-text-bold': handleBoldText } ]">
+        <label  v-if="label" 
+                :for="id || label" 
+				class="m-input-label" 
+				:id="labelId"
                 :class="[ handleLabelColor, labelClass ]" 
-                :style="[labelSize!, (labelColor.startsWith('#') || labelColor.startsWith('rgb')) ? handleLabelColor : '', ]">
+                :style="[ labelSize!, (labelColor.startsWith('#') || labelColor.startsWith('rgb')) ? handleLabelColor : '', ]">
             {{ label }}
         </label>
         <div class="m-input-container">
             <input  ref="m_input" :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-                    :id="id || label" :name="id" :autofocus="(autoFocus as boolean)" :placeholder="placeholder" :type="type" 
+                    :id="id || label" 
+					:name="id" 
+					:autofocus="(autoFocus as boolean)" 
+                    :tabindex="tabindex"
+					:placeholder="placeholder" 
+					:type="type" 
                     :class="[ 'm-input', { 'm-input-icon': dynamicSVG(icon) }, { 'm-input-password': (type === 'password') },
-                        handleColor, handleShape, (!textColor.startsWith('#') && !textColor.startsWith('rgb')) ? handleTextColor : '', 
-                        handleSize, ]"
-                    :style="[ (textColor.startsWith('#') || textColor.startsWith('rgb')) ? (handleTextColor as StyleValue) : '', (color.startsWith('#') || color.startsWith('rgb')) ? (customColor as StyleValue) : '' ]"
+						handleColor, handleShape, (!textColor.startsWith('#') && !textColor.startsWith('rgb')) ? handleTextColor : '', 
+						handleSize, { 'm-input-password': type === 'password' } ]"
+                    :style="[ (textColor.startsWith('#') || textColor.startsWith('rgb')) ? (handleTextColor as StyleValue) : '', 
+						(color.startsWith('#') || color.startsWith('rgb')) ? (customColor as StyleValue) : '', ]"
                     :disabled="(disabled as boolean)" />
-
-            <span   v-if="(type === 'email')" class="m-input-email-progress-bar"
-                    :class="{ 'm-animation-shake-error': playShakeError }" 
-                    :style="handleValidationStyle" />
+          
             <component  v-if="type === 'password'" 
                         @click="togglePasswordVisibility" 
                         :show-password="showPassword" 
-                        :is="dynamicSVG('password-icons')" />
+                        :is="computedPasswordIcon" />
 
-            <span v-if="dynamicSVG(icon)" class="m-input-border"></span>
-            <component v-if="dynamicSVG(icon)" :is="dynamicSVG(icon)" :class="[ { 'm-icon-bold': handleBoldText } ]" />
+            <span v-if="computedCustomIcon" class="m-input-border"></span>
+            <component v-if="computedCustomIcon" :is="computedCustomIcon" :class="[ { 'm-icon-bold': handleBoldText } ]" />
         </div>
+		<span v-if="(type === 'email')" 
+			class="m-input-email-progress-bar"
+			:class="{ 'm-animation-shake-error': playShakeError }" 
+			:style="handleValidationStyle" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import { StyleValue, computed, reactive, ref } from 'vue';
-import { dynamicSVG, isValidEmail } from '@/utils';
-import { shapes, textColors } from '@/common';
+import { dynamicSVG, isValidEmail } from '../../utils';
+import { shapes, textColors } from 'D:/Work/vue-m/git/vue-m/vue-m-ui/src/common';
 import { colors, labelSizes, sizes } from './props';
 
 const m_input = ref<HTMLInputElement>();
@@ -48,7 +60,6 @@ const validationStyle = reactive({
     transform: ''
 });
 
-// TODO: Add tab indexing
 const props = defineProps({
 	modelValue: String,
     id: String,
@@ -66,6 +77,10 @@ const props = defineProps({
     placeholder: {
         type: String,
         required: false,
+    },
+    tabindex: {
+        type: Number,
+        default: 0
     },
     icon: {
         type: String,
@@ -118,25 +133,40 @@ const props = defineProps({
 });
 defineEmits([ 'update:modelValue' ])
 
+const computedCustomIcon = computed<boolean | any>(() => dynamicSVG(props.icon));
+const computedPasswordIcon = computed<boolean | any>(() => dynamicSVG('password-icons'));
+
 // #region input validation 
 const handleValidationStyle = computed<StyleValue>(() => {
+	m_input.value?.removeEventListener('input', onInput);
+	m_input.value?.removeEventListener('keyup', onKeyUpEnter);
+    m_input.value?.removeEventListener('focus', onFocusEmail);
+    m_input.value?.removeEventListener('blur', onBlurEmail);
     validEmail.value = validationStyle as StyleValue;
 
     if (props.persistentValidation)
-        validationStyle.transform = 'translate(0px)';
+        validationStyle.transform = 'translateY(0px)';
     else
-        validationStyle.transform = '';
+        validationStyle.transform = 'translateY(-25px)';
 
     if (props.type === 'email') {
         m_input.value?.addEventListener('input', onInput);
         m_input.value?.addEventListener('keyup', onKeyUpEnter);
-    } else {
-        m_input.value?.removeEventListener('input', onInput);
-        m_input.value?.removeEventListener('keyup', onKeyUpEnter);
-    }
+        m_input.value?.addEventListener('focus', onFocusEmail);
+        m_input.value?.addEventListener('blur', onBlurEmail);
+	}
 
     return validationStyle;
 });
+const onFocusEmail = () => {
+    validationStyle.transform = 'translateY(0px)';
+}
+const onBlurEmail = () => {
+    if (props.persistentValidation)
+        validationStyle.transform = 'translateY(0px)';
+    else
+        validationStyle.transform = 'translateY(-25px)';
+}
 const onInput = () => {
     if (!m_input.value?.value && !props.persistentValidation) 
         return validationStyle.transform = 'translateY(-25px)';
@@ -177,6 +207,7 @@ function togglePasswordVisibility() {
 }
 // #endregion
 
+// #region input color 
 const handleColor = computed<string>(() => {
     removeEventListeners();
     if (!props.color)
@@ -206,6 +237,7 @@ const handleTextColor = computed<string | StyleValue>(() => {
         return { color: props.textColor } as StyleValue;
     return (textColors as any)[ props.textColor ];
 });
+// #endregion
 
 const handleLabelColor = computed<string>(() => {
     if (!props.labelColor)
