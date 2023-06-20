@@ -1,5 +1,11 @@
 <!-- TODO: Create comparison links on vue-m versions -->
-## 0.3.0 (06-06-2023)
+## [0.3.1](https://github.com/prolazydev/vue-m/compare/v0.3.0...vue-m%400.3.1) (06-06-2023)
+
+### Fixed
+- Resolved the tabbing issue for the `m-btn` component while removing unnecessary js
+- Fixed bugs on `m-input` relating to icon sizes and the refreshing of the icons on keyboard input
+
+## [0.3.0](https://github.com/prolazydev/vue-m/compare/v0.3.0...v0.1.1) (06-06-2023)
 
 ### Feature
 
@@ -36,19 +42,19 @@
 - Added the custom width with the `custom-width` string prop that accepts normal css size units
 - Added: `disabled` and `loading` 
 
-#### Other
+### Fixed
 
-- Added css minification with postcss cssnano plugin
+- Fixed some minor bugs on `<m-btn></m-btn>` that wasn't detecting the tab on custom colors
 
 ### Changed
 
 - Minor reorganizing of css with vars to better support color and style customization.
 
-### Fixed
+#### Other
 
-- Fixed some minor bugs on `<m-btn></m-btn>` that wasn't detecting the tab on custom colors
+- Added css minification with postcss cssnano plugin
 
-## 0.2.0 (01-06-2023)
+## 0.2.0 (01-06-2023) 
 
 ### Feature
 
@@ -58,7 +64,7 @@
 
 - Minor reorganizing of the project structure for better scalability and maintainability.
 
-## 0.1.1 (26-05-2023)
+## 0.1.1 (26-05-2023) 
 
 ##### First of many! 🎉
 
