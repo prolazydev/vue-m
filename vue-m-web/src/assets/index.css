@@ -1,0 +1,62 @@
+.toggle-playground {
+	@apply select-none absolute top-2/4 left-2/4 translate-y-[-50%] translate-x-[-50%];
+}
+
+.toggle-playground:hover button {
+	@apply rounded-[30px]
+}
+
+.toggle-playground button {
+	@apply relative top-0 left-0 text-white font-extrabold text-lg p-4 z-10
+	transition-all duration-1000
+	active:blur-[0px]
+	;
+
+	background: linear-gradient(-45deg, #ffa63d, #ff3d77, #338aff, #3cf0c5, #f03c67);
+	background-size: 600%;
+	animation: animate-toggle-bg 20s linear infinite ; 
+}
+
+.toggle-playground button:first-child {
+	filter: blur(30px);
+}
+
+.toggle-playground button:last-child {
+	@apply absolute
+}
+
+.toggle-playground button:hover {
+	background-size: 200%;
+}
+
+.toggle-playground button:active,
+.toggle-playground:active button:first-child {
+	@apply duration-500;
+	background-size: 100%;
+}
+
+.toggle-playground:active button:first-child {
+	filter: blur(10px);
+}
+
+.test-toggle {
+	@apply fixed right-0 transition-opacity;
+	border-top: 75px solid gray;
+    border-left: 75px solid transparent;
+}
+
+@keyframes animate-toggle-bg {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 150%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.showcase-showing {
+	opacity: 0;
+}

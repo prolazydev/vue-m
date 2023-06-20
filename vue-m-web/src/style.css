@@ -6,10 +6,13 @@
 	--bg: url('./assets/bg-square.svg');
 	--bg-dark: url('./assets/bg-square-dark.svg');
 	--bg-transparent: url('./assets/bg-square-transparent.svg');
+	--footer-height: 96px;
+	--footer-bottom-margin: 24px;
 }
 
-* {
+*,*::before,*::after {
 	box-sizing: border-box;
+	font-size: 100%;
 }
 
 html {
@@ -19,33 +22,132 @@ html {
 }
 
 body {
-	height: 100%;
-}
-.main-title {
-		backdrop-filter: blur(4px) saturate(70%);
-		-webkit-backdrop-filter: blur(5px) saturate(70%);
+	min-height: 100%;
+	height: auto;
 }
 
 #app {
+	min-height: 100svh;
 	width: 100%;
-	height: 100%;
+	
+	display: flex;
+    flex-direction: column;
 
-	padding: 3rem;
 	background: var(--bg);
 	background: var(--bg-dark);
 	background: var(--bg-transparent);
 	transition: transform, background, background-position 0.25s ease-out !important;
 }
 
-/* REUSABLE Classes */
-
-.m-el {
-	@apply 	min-w-[12rem] p-10 flex flex-col gap-10 text-center justify-center items-center font-semibold text-2xl 
-			backdrop-blur-sm border-[6px] shadow-md hover:shadow-none transition-all;
+.ui-elements {
+	@apply 	w-4/5 mx-auto flex flex-wrap gap-4 justify-between items-center transition-opacity 
+			max-sm:justify-center max-sm:gap-10;
 }
 
+/* REUSABLE Classes */
+.m-el {
+	@apply 	min-w-[12rem] p-10 m-auto flex flex-col gap-10 text-center justify-center items-center font-semibold text-2xl overflow-hidden
+			backdrop-blur-sm border-[6px] shadow-md hover:shadow-none transition-all;
+}
 
 .m-el-name {
 	@apply cursor-pointer underline-offset-[6px] underline hover:underline-offset-2 select-none transition-all duration-[250ms];
 }
 
+.main-title {
+	font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+	height: 107px;
+	padding: 0rem;
+	margin: 0 auto;
+
+	display: flex;
+
+	font-size: 2rem;
+	text-align: center;
+
+	animation: openTitle 1s ease-in-out 0.25s 1 normal forwards;
+
+	backdrop-filter: blur(4px) saturate(70%);
+	-webkit-backdrop-filter: blur(5px) saturate(70%);
+}
+
+.main-title::after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	border-radius: 5px;
+	box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+}
+
+.main-title::after {
+	animation: bringShadow 0.75s cubic-bezier(0, 0, 0.5, 1) 1.2s 1 forwards;
+}
+
+@keyframes openTitle {
+	from {
+		width: 0px;
+		padding: 0rem;
+	} to {
+		width: 452.2px;
+		padding: 2rem;
+	}
+}
+
+@keyframes bringShadow {
+	to { opacity: 1; }
+}
+
+/* Responsiveness */
+@media only screen and (max-width: 640px) {
+	.main-title {
+		animation: none !important;
+		width: 350px;
+		height: 90px;
+		padding: 1rem !important;
+	}
+	.main-title h1 {
+		font-size: 1.6rem;
+		align-self: baseline;
+		top: 25%;
+	}
+
+	.hr-line {
+		width: 350px;
+		margin: 0 auto;
+	}
+	.hr-line hr {
+		width: 100%;
+	}
+}
+@media only screen and (max-width: 412px) {
+	.main-title {
+		width: 90%;
+		height: 75px;
+	}
+	.main-title h1 {
+		font-size: 1.29rem;
+		top: 25%;
+	}
+
+	.hr-line {
+		width: 95%;
+		margin: 0 auto;
+	}
+}
+
+/* TRANSITION GROUP */
+.showcase-enter-active,
+.showcase-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.showcase-enter-from,
+.showcase-leave-to {
+  opacity: 0;
+}
