@@ -1,8 +1,8 @@
 <template>
-    <button ref="mBtn" :disabled="handleLoadingState || (disabled as boolean)"
-            :class="[ !isCustomColor ? handleColor : 'm-btn', handleSize, handleShape, handleTransparency, handleTextColor ]"
-            :style="isCustomColor ? (handleColor as StyleValue) : ''" >
-        <div :class="{ 'm-loading': handleLoadingState }" class="m-btn-content">
+    <button ref="mBtn" :disabled="handleLoadingState || (disabled as boolean)" :class="[ 'm-btn', 
+        handleCustomColors, handleColor, handleSize, handleShape, handleTransparency, handleTextColor,
+    ]">
+        <div :class="{ 'm-loading': handleLoadingState  }" class="m-btn-content">
             <template v-if="props.text"> {{ props.text }} </template>
             <slot v-else />
         </div>
@@ -14,14 +14,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef, StyleValue, computed, ref } from 'vue';
+import { StyleValue, computed, ref } from 'vue';
 import { createLighterShades, dynamicSVG } from '@/utils';
 import { btnSizes, btnColors } from './props';
 import { shapes, textColors } from '@/common';
 
 const mBtn = ref<HTMLButtonElement | null>(null);
-const shades = ref<string[]>([]);
-const mousedown = ref(false);
 
 // TODO: Add tab tab-indexing
 const props = defineProps({
@@ -63,65 +61,38 @@ const props = defineProps({
 });
 
 // Prop Handling
-const handleTextColor= computed<string>(() => {
+const handleTextColor = computed<string>(() => {
+    mBtn.value?.style.removeProperty('--m-btn-text-color');
+
     if (!props.textColor)
         return '';
+    if (props.textColor.startsWith('#') || props.textColor.startsWith('rgb')) 
+        return mBtn.value?.style.setProperty('--m-btn-text-color', props.textColor);
     return (textColors as any)[ props.textColor ];
 });
 
 const handleColor = computed<string | StyleValue>(() => {
-    removeEventListeners();
+    mBtn.value?.style.removeProperty('--m-btn-bg-color');
+    mBtn.value?.style.removeProperty('--m-btn-bg-color-hover');
+    mBtn.value?.style.removeProperty('--m-btn-bg-color-active');
+    
     if (!props.color)
         return btnColors.default + ' ' + btnSizes.md;
-    if (props.color.startsWith('#') || props.color.startsWith('rgb') || props.color.startsWith('rgba')) {
-        shades.value = createLighterShades(props.color);
-        addEventListeners();
+    if (props.color.startsWith('#') || props.color.startsWith('rgb')) {
+        const shades = createLighterShades(props.color);
 
-        return { backgroundColor: props.color };
+        mBtn.value?.style.setProperty('--m-btn-bg-color', props.color);
+        mBtn.value?.style.setProperty('--m-btn-bg-color-hover', shades[ 0 ]);
+        mBtn.value?.style.setProperty('--m-btn-bg-color-active', shades[ 1 ]);
+        return;
     }
     return (btnColors as any)[ props.color ];
 });
 
-function removeEventListeners() {
-    mBtn.value?.removeEventListener('mouseenter', onMouseEnter);
-    mBtn.value?.removeEventListener('mouseleave', onMouseLeave);
-
-    mBtn.value?.removeEventListener('mousedown', onMouseDown);
-    mBtn.value?.removeEventListener('mouseup', onMouseUp);
-
-    mBtn.value?.removeEventListener('keydown', onKeyDown);
-
-    mBtn.value?.removeEventListener('focusin', onFocusIn);
-    mBtn.value?.removeEventListener('blur', onBlur);
-}
-function addEventListeners() {
-    mBtn.value?.addEventListener('mouseenter', onMouseEnter);
-    mBtn.value?.addEventListener('mouseleave', onMouseLeave);
-
-    mBtn.value?.addEventListener('mousedown', onMouseDown);
-    mBtn.value?.addEventListener('mouseup', onMouseUp);
-
-    mBtn.value?.addEventListener('keydown', onKeyDown);
-
-    mBtn.value?.addEventListener('focusin', onFocusIn);
-    mBtn.value?.addEventListener('blur', onBlur);
-}
-const onMouseEnter = () => mBtn.value!.style.backgroundColor = shades.value[ 0 ];
-const onMouseLeave = () => mBtn.value!.style.backgroundColor = props.color;
-const onMouseDown = () => { mBtn.value!.style.backgroundColor = shades.value[ 1 ]; mousedown.value = true; };
-const onMouseUp = () => mBtn.value!.style.backgroundColor = shades.value[ 0 ];
-
-const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Shift')
-        mBtn.value!.style.boxShadow = `0px 0px 0px white, 0px 0px 0px 1.5px ${props.color}`;
-}
-
-const onFocusIn = () => {
-    if (!mousedown.value)
-        mBtn.value!.style.boxShadow = `0px 0px 0px white, 0px 0px 0px 1.5px ${props.color}`;
-    mousedown.value = false;
-};
-const onBlur = () => { mBtn.value!.style.boxShadow = ''; mousedown.value = false; };
+const handleCustomColors = computed<string | void>(() => {
+    if (props.color.startsWith('#') || props.color.startsWith('rgb') || props.textColor.startsWith('#') || props.textColor.startsWith('rgb'))
+        return 'm-btn-custom-colors';
+});
 
 const handleSize = computed(() => {
     if (!props.size)
@@ -147,14 +118,5 @@ const handleTransparency = computed(() => {
     if (Boolean(props.transparent))
         return 'm-btn-transparent';
 });
-
-const isCustomColor: ComputedRef<boolean> = computed(() => {
-    if (typeof handleColor.value == 'string')
-        return false;
-
-    return typeof handleColor.value == 'object'
-        && (handleColor as any).value?.backgroundColor?.startsWith('#')
-        || (handleColor as any).value?.backgroundColor?.startsWith('rgb');
-})
 
 </script>

@@ -12,6 +12,8 @@
 	--m-switch-left: calc(100% - 1rem);
 	--m-switch-left-checked: calc(100% - 1rem);
 
+	--m-input-password-padding: 33px;
+
 	/* TODO: Recreate the colors as vars */
 	/* COLORS */
 	--m-bg-light: rgb(241 241 241);
@@ -24,9 +26,17 @@
 
 	/* Switch colors */
 	--m-switch-custom-knob-color: '';
+
+
+	/* CUSTOM BUTTON COLORS */
+	--m-btn-text-color: #fff;
+	--m-btn-bg-color: #fff;
+	--m-btn-bg-color-hover: #fff;
+	--m-btn-box-shadow: #fff;
+	--m-btn-bg-color-active: #fff;
 }
 
-*{
+* {
 	box-sizing: border-box;
 	margin: 0;
     position: relative;
@@ -186,6 +196,27 @@
 	@apply px-11 py-10 text-5xl leading-6 outline-2 outline-offset-[-4px]
 }
 
+/* Button Custom Colors */
+.m-btn-custom-colors {
+	@apply 	transition-all text-[var(--m-btn-text-color)] bg-[var(--m-btn-bg-color)]
+			hover:bg-[var(--m-btn-bg-color-hover)] active:bg-[var(--m-btn-bg-color-active)] ;
+}
+
+.m-btn-custom-colors:focus-visible {
+	box-shadow: 0px 0px 0px white, 0px 0px 0px 1.5px var(--m-btn-bg-color);
+}
+/* .m-btn-custom-colors:hover {
+	background-color: var(--m-btn-bg-color-active);
+} */
+
+/* .m-btn-custom-colors::placeholder {
+	color: var(--m-btn-bg-color);
+}
+
+.m-btn-custom-colors:focus {
+	border-color: var(--m-btn-bg-color);
+} */
+
 /* Button Transparency */
 .m-btn-transparent {
 	@apply 	bg-opacity-0 text-black
@@ -254,8 +285,9 @@
 
 /* Input Sizes */
 .m-input-size-2xs {
-	@apply py-[2px] px-1 text-xs ;
+	@apply py-[2px] pr-1 text-xs ;
 	--m-input-icon-padding: 1.75rem;
+	--m-input-password-padding: 1.35rem;
 }
 .m-input-size-2xs ~ .m-icon {
 	@apply left-1;
@@ -268,10 +300,14 @@
 .m-input-size-2xs ~ .m-input-border {
 	@apply left-[24px] h-3 w-[1px] pointer-events-none;
 }
+.m-input-size-2xs ~ .m-icons-eye {
+	@apply w-4 h-4 right-1;
+}
 
 .m-input-size-xs {
-	@apply py-1 px-2 text-xs leading-5;
+	@apply py-1 pr-2 text-xs leading-5;
 	--m-input-icon-padding: 1.75rem;
+	--m-input-password-padding: 1.85rem;
 }
 .m-input-size-xs ~ .m-icon {
 	--m-input-icon-w: 1rem; 
@@ -280,18 +316,26 @@
 .m-input-size-xs ~ .m-input-border {
 	@apply left-6 h-4 w-[1px];
 }
+.m-input-size-xs ~ .m-icons-eye {
+	@apply w-5 h-5 right-2;
+}
 
 .m-input-size-sm {
-	@apply py-1 px-2 text-sm;
+	@apply py-1 pr-2 text-sm;
 	--m-input-icon-padding: 2rem;
+	--m-input-password-padding: 1.9rem;
 }
 .m-input-size-sm ~ .m-input-border {
 	@apply left-7 h-4
 }
+.m-input-size-sm ~ .m-icons-eye {
+	@apply w-5 h-5 right-2;
+}
 
 .m-input-size-md {
-	@apply py-[7px] px-2 text-base;
+	@apply py-[7px] pr-2 text-base;
 	--m-input-icon-padding: 2.55rem;
+	--m-input-password-padding: 2rem;
 }
 .m-input-size-md ~ .m-input-border {
 	@apply left-[34px] h-[22px];
@@ -303,8 +347,9 @@
 }
 
 .m-input-size-lg {
-	@apply py-2 p-3 text-lg;
+	@apply py-2 pr-3 text-lg;
 	--m-input-icon-padding: 3rem;
+	--m-input-password-padding: 2.2rem;
 }
 .m-input-size-lg ~ .m-icon {
 	--m-input-icon-w: 2rem; 
@@ -313,11 +358,21 @@
 .m-input-size-lg ~ .m-input-border {
 	@apply left-10 h-7
 }
+.m-input-size-lg ~ .m-icons-eye {
+	@apply w-6 h-6 right-2;
+}
 
 .m-input-size-xl {
-	@apply py-3 p-4 text-2xl border-2;
+	@apply py-3 pr-4 text-2xl border-2;
 	--m-focus-shadow-border-thickness: 0 0 0 2px;
-	--m-input-icon-padding: 4rem;
+	--m-input-icon-padding: 4.2rem;
+	--m-input-password-padding: 3rem;
+}
+.m-input-size-xl + .m-input-password {
+	@apply pr-10;
+}
+.m-input-size-xl ~ .m-icons-eye {
+	@apply w-8 h-8 right-3;
 }
 .m-input-size-xl ~ .m-icon {
 	@apply left-2;
@@ -329,9 +384,10 @@
 }
 
 .m-input-size-2xl {
-	@apply py-4 p-5 text-3xl leading-4 border-4;
+	@apply py-4 pr-4 text-3xl leading-4 border-4;
 	--m-focus-shadow-border-thickness: 0 0 0 2.5px;
 	--m-input-icon-padding: 5rem;
+	--m-input-password-padding: 3.5rem;
 }
 .m-input-size-2xl ~ .m-icon {
 	@apply left-3;
@@ -340,6 +396,13 @@
 }
 .m-input-size-2xl ~ .m-input-border {
 	@apply left-[70px] h-11 w-[2px];
+}
+.m-input-size-2xl ~ .m-icons-eye {
+	@apply w-10 h-10 right-3;
+}
+
+.m-input-password {
+	padding-right: var(--m-input-password-padding);
 }
 
 /* .m-input:focus {
@@ -467,7 +530,7 @@
 
 /* Icons */
 .m-icon {
-	@apply absolute left-[5.5px] pointer-events-none;
+	@apply absolute left-[5.5px] pointer-events-none z-10;
 
 	width: var(--m-input-icon-w);
 	height: var(--m-input-icon-h);
