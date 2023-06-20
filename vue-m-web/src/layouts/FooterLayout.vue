@@ -1,21 +1,30 @@
 <template>
 	<Transition name="showcase" mode="out-in" :duration="500">
 		<div v-if="showcase" class="p-5 flex mt-auto w-screen">
-			<footer class="w-4/5 h-auto m-auto p-10 flex justify-between shadow-lg  hover:shadow-none transition-shadow backdrop-blur-sm">
-				<div class="flex items-center">
-					<p>Made with 💚 by 
-						<a class="text-gray-600 hover:text-gray-950 transition-colors" href="https://github.com/prolazydev" target="_blank" rel="noopener noreferrer">prolazydev</a> 
+			<footer>
+				<div class="footer-left flex items-center">
+					<p>
+						Made with 
+						<span class="grayscale hover:grayscale-0 cursor-default transition-all">
+							💚
+						</span> 
+						by 
+						<a class="text-gray-600 hover:text-gray-950 transition-colors" href="https://github.com/prolazydev" target="_blank" rel="noopener noreferrer">
+							prolazydev
+						</a> 
 					</p>
 				</div>
 
-				<div class="flex">
-					<img class="w-32 h-auto grayscale hover:grayscale-0 transition-all duration-500" src="/vue-m.svg" />
-				</div>
+				<img class="vue-m-logo" src="/vue-m.svg" />
 				
-				<div class="flex flex-col gap-3">
+				<div class="hr-line-footer">
+					<hr class="">
+				</div>
+
+				<div class="footer-right">
 					<h4 class="text-xl">Contacts</h4>
 					<a class="text-gray-600 hover:text-gray-950 transition-colors" href="mailto:flamur.biz@hotmail.com">flamur.biz@hotmail.com</a>
-					<div class="flex gap-3">
+					<div class="footer-links flex gap-3">
 						<a class="flex" href="https://www.linkedin.com/in/flamurfazliu/" target="_blank" rel="noopener noreferrer">
 							<svg class="w-8 h-auto text-gray-600 hover:text-sky-700 transition-colors" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect x="0" y="0" width="20" height="20" fill="none" stroke="none" /><path fill="currentColor" d="M10 .4C4.698.4.4 4.698.4 10s4.298 9.6 9.6 9.6s9.6-4.298 9.6-9.6S15.302.4 10 .4zM7.65 13.979H5.706V7.723H7.65v6.256zm-.984-7.024c-.614 0-1.011-.435-1.011-.973c0-.549.409-.971 1.036-.971s1.011.422 1.023.971c0 .538-.396.973-1.048.973zm8.084 7.024h-1.944v-3.467c0-.807-.282-1.355-.985-1.355c-.537 0-.856.371-.997.728c-.052.127-.065.307-.065.486v3.607H8.814v-4.26c0-.781-.025-1.434-.051-1.996h1.689l.089.869h.039c.256-.408.883-1.01 1.932-1.01c1.279 0 2.238.857 2.238 2.699v3.699z"/></svg>
 						</a>
@@ -44,5 +53,80 @@ onMounted(() => {
 
 <style>
 @import url('../assets/index.css');
+
+footer {
+	@apply w-4/5 h-auto m-auto p-10 flex justify-between shadow-lg border-[6px] hover:shadow-none transition-shadow backdrop-blur-sm;
+}
+
+.vue-m-logo {
+	@apply absolute left-2/4 top-2/4 translate-x-[-50%] translate-y-[-50%] w-32 h-auto grayscale hover:grayscale-0 transition-all duration-500;
+}
+
+.footer-right {
+	@apply flex flex-col gap-3;
+}
+
+.hr-line-footer {
+	@apply w-full;
+	display: none;
+}
+
+.hr-line-footer hr {
+	@apply m-auto mt-3 border-t-[6px] border-dashed;
+}
+
+@media screen and (max-width: 855px) {
+	footer {
+		@apply w-full
+	}
+}
+@media screen and (max-width: 655px) {
+	footer {
+		@apply flex-col justify-center items-center gap-5
+	}
+	
+	.vue-m-logo {
+		@apply relative left-0 top-0 translate-x-0 translate-y-0
+	}
+	
+	.footer-right {
+		@apply w-full h-[64px] flex-wrap items-baseline justify-end content-between
+	}
+}
+@media screen and (max-width: 446px) {
+	.hr-line-footer {
+		display: block;
+	}
+
+	footer {
+		@apply flex-col-reverse gap-5;
+		height: auto;
+	}
+	.footer-left {
+		@apply mb-0
+	}
+	.footer-right {
+		@apply h-auto
+	}
+	
+}
+@media screen and (max-width: 298px) {
+	
+
+	.footer-right {
+		@apply overflow-hidden
+	}
+
+	.footer-right a {
+		width: 100%;
+    	overflow: scroll;
+		-ms-overflow-style: none;  /* IE and Edge */
+  		scrollbar-width: none;  /* Firefox */
+	}
+
+	.footer-right a::-webkit-scrollbar {
+		display: none;
+	}
+}
 
 </style>
