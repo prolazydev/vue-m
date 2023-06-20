@@ -60,3 +60,13 @@
 .showcase-showing {
 	opacity: 0;
 }
+
+.main {
+	@apply p-12
+}
+
+@media screen and (max-width: 426px) {
+	.main {
+		@apply p-3 pt-12
+	}
+}

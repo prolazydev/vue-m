@@ -1,5 +1,5 @@
 <template>
-	<div class="p-12" :class="(!showcase) ? 'min-h-screen' : 'main'">
+	<div :class="(!showcase) ? 'min-h-screen' : 'main'">
 		<Transition name="showcase" :duration="duration" mode="out-in" appear>
 			<div v-if="!showcase" @click="toggleShowcase" :class="{ 'showcase-showing': showcase }"
 				class="toggle-playground">
@@ -19,7 +19,7 @@
 					<h1 id="mainTitle"></h1>
 				</div>
 
-				<div class="hr-line  transition-opacity">
+				<div class="hr-line transition-opacity">
 					<hr class="w-4/5 m-auto mt-3 border-t-[6px] border-dashed">
 				</div>
 				<div class="ui-elements">
@@ -149,5 +149,4 @@ function toggleEmail() {
 
 <style>
 @import url('../assets/index.css');
-
 </style>

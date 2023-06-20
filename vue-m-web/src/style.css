@@ -81,7 +81,7 @@ body {
 	top: 0;
 	left: 0;
 	opacity: 0;
-	border-radius: 5px;
+	border-width: 6px;
 	box-shadow: 0 3px 10px rgba(0,0,0,0.25);
 }
 
@@ -112,7 +112,7 @@ body {
 		padding: 1rem !important;
 	}
 	.main-title h1 {
-		font-size: 1.6rem;
+		font-size: 1.55rem;
 		align-self: baseline;
 		top: 25%;
 	}
@@ -128,17 +128,27 @@ body {
 @media only screen and (max-width: 412px) {
 	.main-title {
 		width: 90%;
-		height: 75px;
 	}
 	.main-title h1 {
-		font-size: 1.29rem;
+		font-size: 1.55rem;
 		top: 25%;
 	}
-
+	
 	.hr-line {
 		width: 95%;
 		margin: 0 auto;
 	}
+}
+@media only screen and (max-width: 394px) {
+	.main-title {
+		width: 275px;
+		height: 75px;
+	}
+
+	.main-title h1 {
+		font-size: 1.25rem;
+	}
+	
 }
 
 /* TRANSITION GROUP */
