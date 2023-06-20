@@ -16,11 +16,12 @@ const router = createRouter({
 	]
 });
 
-const brandName = '';
+// TODO: router guard?
+// const brandName = '';
 
-router.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
 
-	next();
-});
+// 	next();
+// });
 
 export default router;
